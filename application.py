@@ -11,7 +11,7 @@ def job():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=job, trigger="interval", seconds=7200)
+scheduler.add_job(func=job, trigger="interval", seconds=120)
 scheduler.start()
 
 application = Flask(__name__)
