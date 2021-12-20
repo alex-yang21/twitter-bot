@@ -33,14 +33,17 @@ def get_translation(text):
     try:
         r = requests.post(url, json=payload)
     except:
-        print("Error while translating...")
+        logger.info("Error while translating...")
 
     json_obj = json.loads(r.text)
     return json_obj["contents"]["translated"]
 
 def get_last_tweet(file):
     f = open(file, 'r')
-    lastId = int(f.read().strip())
+    line = f.read().strip()
+    lastId = 1
+    if line:
+        lastId = int(line)
     f.close()
     return lastId
 
@@ -56,7 +59,7 @@ def respondToTweet(file="tweet_id.txt"): # default file
     Stores most recently replied to tweet id in file and writes to with newest one.
     """
     last_id = get_last_tweet(file)
-    mentions = api.mentions_timeline(last_id, tweet_mode='extended')
+    mentions = api.mentions_timeline(since_id=last_id)
     if len(mentions) == 0:
         return
 
@@ -64,18 +67,25 @@ def respondToTweet(file="tweet_id.txt"): # default file
 
     for mention in reversed(mentions):
         new_id = mention.id
-        if keyword in mention.full_text.lower(): # chosen keyword above
+        if keyword in mention.text.lower(): # chosen keyword above
             logger.info("Responding back to -{}".format(mention.id))
             try:
+                logger.info("finding parent tweet")
                 replied_tweet = api.get_status(mention.in_reply_to_status_id) # grab the tweet that this mention is replying to
+                logger.info("translating tweet")
                 translation = get_translation(replied_tweet.text)
-                logger.info("liking and replying to tweet")
-                api.create_favorite(mention.id)
-                api.update_status('@' + mention.user.screen_name + " " + translation, mention.id)
+                logger.info(f"Tweet: {replied_tweet.text}. Translated tweet: {translation}")
+                # logger.info("liking tweet")
+                # api.create_favorite(mention.id)
+                logger.info("replying to tweet")
+                api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
             except:
                 logger.info("Already replied to {}".format(mention.id))
 
     put_last_tweet(file, new_id)
 
-if __name__=="__main__":
+def main():
     respondToTweet()
+
+if __name__=="__main__":
+    main()
