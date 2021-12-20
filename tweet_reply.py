@@ -40,11 +40,7 @@ def get_translation(text):
 
 def get_last_tweet(file):
     f = open(file, 'r')
-    line = f.read().strip()
-    lastId = 1
-    if line:
-        lastId = int(line)
-    f.close()
+    lastId = int(f.read().strip())
     return lastId
 
 def put_last_tweet(file, Id):
