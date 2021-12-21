@@ -9,9 +9,13 @@ def job():
     tweet_reply.respondToTweet('tweet_id.txt')
     print("Success")
 
+def daily_quote():
+    tweet_reply.tweet_quote()
+
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=job, trigger="interval", seconds=120)
+scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
 scheduler.start()
 
 application = Flask(__name__)
