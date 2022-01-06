@@ -111,7 +111,8 @@ def tweet_quote():
     Tweets the retrieved quote. Attempts to find a quote with at least one of these key words above.
     """
     quote = None
-    while True:
+    flag = False
+    for i in range(20):
         logger.info("searching for a good quote...")
         quote = get_quote()
 
@@ -119,6 +120,7 @@ def tweet_quote():
         for phrase in key_phrases:
             if phrase in quote:
                 logger.info("found a quote")
+                flag = True
                 break
 
         # search quote for key words
@@ -126,10 +128,15 @@ def tweet_quote():
         for word in quote_arr:
             if word in key_words or "ing" == word[-3:]:
                 logger.info("found a quote")
+                flag = True
                 break
 
         # wait 3 seconds before calling the API again
         time.sleep(3)
+
+    if not flag:
+        logger.info("Didn't find a good quote.")
+        return
 
     logger.info(f"tweeting quote: {quote}")
     translation = get_translation(quote)
