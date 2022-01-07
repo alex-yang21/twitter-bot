@@ -1,0 +1,15 @@
+(under construction, use API until finished)
+
+Gungan translator rules:
+  1. try to use mappings from https://starwars.fandom.com/wiki/Gungan_Basic
+  2. try not to use old Gungan
+  3. use our own rules
+
+Our rules:
+  1. follow English grammar, just use 1-1 mappings
+  2. add 'a' after any word that ends in 's'
+  3. add 'sa' after any word that ends in a 'vowel'
+  4. add 'en' or 'ing' to verbs but not sure how feasible
+  5. don't/do not--> no
+  6. expect --> spect
+  ...

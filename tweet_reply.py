@@ -49,6 +49,7 @@ def get_last_tweet(file):
         mentions = api.mentions_timeline()
         for mention in mentions:
             lastId = max(lastId, mention.id)
+        lastId += 1 # let's not translate any tweets that are done when down
     else:
         lastId = int(line)
     return lastId
