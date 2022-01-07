@@ -80,7 +80,7 @@ def respondToTweet(file="tweet_id.txt"): # default file
     for mention in reversed(mentions):
         new_id = mention.id
         if keyword in mention.text.lower(): # chosen keyword above
-            logger.info("Responding back to -{}".format(mention.id))
+            logger.info("Responding back to {}".format(mention.id))
             try:
                 logger.info("finding parent tweet")
                 replied_tweet = api.get_status(mention.in_reply_to_status_id) # grab the tweet that this mention is replying to
