@@ -41,21 +41,25 @@ def get_translation(text):
     return json_obj["contents"]["translated"]
 
 def get_last_tweet(file):
-    f = open(file, 'r')
+    f = open(file, "r+")
     line = f.read().strip()
-    lastId = 1 # case where not mentioned and restarting code, lastId will stay 1
+    lastId = 0
     if not line: # we have restarted the code, find the most recent mention if any
         logger.info("searching for a previous mention since cold file")
         mentions = api.mentions_timeline()
         for mention in mentions:
             lastId = max(lastId, mention.id)
         lastId += 1 # let's not translate any tweets that are done when down
+        f.write(str(lastId))
+        logger.info(f"found the last id: {lastId}")
     else:
+        logger.info("found most recent reply id, not cold file")
         lastId = int(line)
+    f.close()
     return lastId
 
 def put_last_tweet(file, Id):
-    f = open(file, 'w')
+    f = open(file, "w")
     f.write(str(Id))
     f.close()
     logger.info("Updated the file with the latest tweet Id")
@@ -67,11 +71,12 @@ def respondToTweet(file="tweet_id.txt"): # default file
     """
     last_id = get_last_tweet(file)
     mentions = api.mentions_timeline(since_id=last_id)
-    if len(mentions) == 0:
+
+    if len(mentions) == 0: # no new tweets to respond to
         return
 
     logger.info("someone mentioned me...")
-
+    new_id = 0
     for mention in reversed(mentions):
         new_id = mention.id
         if keyword in mention.text.lower(): # chosen keyword above
@@ -98,7 +103,7 @@ def get_quote():
     except:
         logger.info("Error while grabbing the quote.")
     res = json.loads(response.text)
-    return res['content']
+    return res['content'], res['author']
 
 key_words = {"I", "me", "my", "you", "your", "we", "they", "he", "she", "there", "them", "this", "that", "yes", "no", "one", "two",
               "three", "four", "five", "six", "seven", "eight", "nine", "ten", "very", "great", "superior", "superb", "amazing",
@@ -111,16 +116,16 @@ def tweet_quote():
     """
     Tweets the retrieved quote. Attempts to find a quote with at least one of these key words above.
     """
-    quote = None
+    quote, author = None, None
     flag = False
     for i in range(20):
         logger.info("searching for a good quote...")
-        quote = get_quote()
+        quote, author = get_quote()
 
         # search quote for key phrases
         for phrase in key_phrases:
             if phrase in quote:
-                logger.info("found a quote")
+                logger.info(f"found a quote: {quote}")
                 flag = True
                 break
 
@@ -128,9 +133,12 @@ def tweet_quote():
         quote_arr = quote.split()
         for word in quote_arr:
             if word in key_words or "ing" == word[-3:]:
-                logger.info("found a quote")
+                logger.info(f"found a quote: {quote}")
                 flag = True
                 break
+
+        if flag:
+            break
 
         # wait 3 seconds before calling the API again
         time.sleep(3)
@@ -142,7 +150,7 @@ def tweet_quote():
     logger.info(f"tweeting quote: {quote}")
     translation = get_translation(quote)
     try:
-        api.update_status(status='"'+translation'"')
+        api.update_status(status=f"'{translation}' - {author}")
     except:
         logger.info("Failed to tweet quote.")
 

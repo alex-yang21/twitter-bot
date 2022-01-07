@@ -5,7 +5,7 @@ import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
-def job():
+def tweet_replies():
     tweet_reply.respondToTweet('tweet_id.txt')
     print("Success")
 
@@ -14,8 +14,8 @@ def daily_quote():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=job, trigger="interval", seconds=120)
-scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
+scheduler.add_job(func=tweet_replies, trigger="interval", seconds=120)
+scheduler.add_job(func=daily_quote, trigger="interval", seconds=1800)
 scheduler.start()
 
 application = Flask(__name__)
