@@ -15,7 +15,7 @@ def get_translation(text):
         translated_phrase = two_phrases[phrase]
         replaced = replaced.replace(phrase, translated_phrase)
 
-    # 2. if there are ever exists 's a ', combine into one
+    # 2. if there are ever exists 's a ', combine into 'sa '
     replaced = replaced.replace("s a ", "sa ")
 
     # 3. search the text for any key words and replace

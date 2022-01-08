@@ -5,8 +5,9 @@ Gungan translator rules:
 
 Our rules:
   1. Follow English grammar, just use 1-1 mappings. This may conflict with some Gungan grammar.
-  2. Expand the Gungan vocabulary as seen fit while keeping integrity of the language
-  3. Rules that can require some randomization (ex: execute 30% of the time):
+  2. If there are ever exists 's a ', combine into 'sa '
+  3. Expand the Gungan vocabulary as seen fit while keeping integrity of the language
+  4. Rules that can require some randomization (ex: execute 30% of the time):
     - add 'a' after a word that ends in 's' (20%)
     - add 'n' or 'sa' after a word that ends in 'e' (20%/10%)
     - replace 'ing' from any verbs with 'en' or simply remove the 'ing' (50/50)

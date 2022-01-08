@@ -170,14 +170,49 @@ our_dict = {
     "invitations": "invitateons",
     "these": "dese",
 
+    # names
+    "alex": "alexsa",
+    "sydney": "sydneysa",
+    "kristof": "kristofsa",
+    "cock": "cawk",
+
     # contractions
     "i'm": "mesa",
+    "i'd": "mesa",
+    "i'll": "mesa",
+    "i've": "mesa",
     "he's": "hesa",
     "she's": "shesa",
     "they're": "daysa",
     "we're": "wesa",
+    "we'd": "wesa",
+    "we've": "wesa",
+    "you're": "yousa",
+    "you'd": "yousa",
+    "you've": "yousa",
+    "you'll": "yousa",
     "it's": "isa",
-    "don't" : "no"
+    "don't" : "no",
+    "didn't": "no",
+    "ain't": "isa not",
+    "aren't": "isa not",
+    "he'd": "hesa",
+    "he'll": "hesa",
+    "she'd": "shesa",
+    "she'll": "shesa",
+    "imma": "mesa",
+    "ion": "mesa no",
+    "that's": "dats",
+    "that'd": "dats",
+    "there's": "dalees",
+    "there're": "dalees",
+    "there'd": "daleed",
+    "there'll": "dalees",
+    "they'd": "daysa",
+    "they'll": "daysa",
+    "they're": "daysa",
+    "they've": "daysa",
+    "this's": "dis"
 }
 
 # our final gungan dictionary
@@ -238,6 +273,9 @@ two_phrases = {
     "do not": "no",
     "Do not": "No",
     "DO NOT": "NO",
+    "did not": "no",
+    "Did not": "No",
+    "DID NOT": "NO",
     "to the": "tada",
     "To the": "Tada",
     "TO THE": "TADA"
