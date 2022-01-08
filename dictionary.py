@@ -175,6 +175,7 @@ our_dict = {
     # names
     "alex": "alexsa",
     "sydney": "sydsa",
+    "kristof": "kristofen",
 
     # contractions
     "i'm": "mesa",
