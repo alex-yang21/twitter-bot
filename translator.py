@@ -8,12 +8,28 @@ def get_translation(text):
     replaced = text
     # 1. iterate through key phrases searching for existence and replace
     for phrase in three_phrases:
-        translated_phrase = three_phrases[phrase]
-        replaced = replaced.replace(phrase, translated_phrase)
+        translated_phrase = None
+        if phrase in replaced:
+            translated_phrase = three_phrases[phrase]
+            replaced = replaced.replace(phrase, translated_phrase)
+        elif phrase.upper() in replaced:
+            translated_phrase = three_phrases[phrase].upper()
+            replaced = replaced.replace(phrase.upper(), translated_phrase)
+        elif phrase.capitalize() in replaced:
+            translated_phrase = three_phrases[phrase].capitalize()
+            replaced = replaced.replace(phrase.capitalize(), translated_phrase)
 
     for phrase in two_phrases:
-        translated_phrase = two_phrases[phrase]
-        replaced = replaced.replace(phrase, translated_phrase)
+        translated_phrase = None
+        if phrase in replaced:
+            translated_phrase = two_phrases[phrase]
+            replaced = replaced.replace(phrase, translated_phrase)
+        elif phrase.upper() in replaced:
+            translated_phrase = two_phrases[phrase].upper()
+            replaced = replaced.replace(phrase.upper(), translated_phrase)
+        elif phrase.capitalize() in replaced:
+            translated_phrase = two_phrases[phrase].capitalize()
+            replaced = replaced.replace(phrase.capitalize(), translated_phrase)
 
     # 2. if there are ever exists 's a ', combine into 'sa '
     replaced = replaced.replace("s a ", "sa ")
@@ -21,35 +37,28 @@ def get_translation(text):
     # 3. search the text for any key words and replace
     res = ""
     curr_word = ""
-    all_caps = True
-    first_cap = True
     replaced += "." # used to make iteration clean
     for i, ch in enumerate(replaced):
         if ch.isalpha() or ch == "'":
-            if ch.islower():
-                if not curr_word:
-                    first_cap = False
-                all_caps = False
             curr_word += ch
         else:
             if curr_word.lower() in key_words:
                 translated_word = key_words[curr_word.lower()]
                 # we keep note of what capitalization the user may have had
-                if all_caps:
+                if curr_word == curr_word.upper():
                     res += translated_word.upper()
-                elif first_cap:
+                elif curr_word == curr_word.capitalize():
                     res += translated_word.capitalize()
                 else:
                     res += translated_word
             else:
                 # 4. use randomization rules to spice up the rest
                 if curr_word:
-                    res += spice_up(curr_word)
+                    #res += spice_up(curr_word)
+                    res += curr_word
             if i != len(replaced)-1:
                 res += ch
             curr_word = ""
-            all_caps = True
-            first_cap = True
 
     return res
 
@@ -73,7 +82,6 @@ def spice_up(word):
     """
     Add some gungan type slang to the word.
     """
-    ing_probs = [.5, .5] # index 0 represents replace "ing" with "en", index 1 represents remove "ing" altogether
     s_probs = [.2] # index 0 represents add "a" after a word that ends in "s"
     e_probs = [.25, .1] # index 0 represents add "n" to a word that ends in "e", index 1 represents add "sa"
     cons_probs = [.15] # index 0 represents adding "en" to a word that ends in a "good consonant"
@@ -81,14 +89,10 @@ def spice_up(word):
     all_caps = word == word.upper()
 
     if word[-3:].lower() == "ing":
-        choice = random_choice(ing_probs)
-        if choice == 0:
-            if all_caps:
-                word = word[:-3] + "EN"
-            else:
-                word = word[:-3] + "en"
-        elif choice == 1:
-            word = word[:-3]
+        if all_caps:
+            word = word[:-3] + "EN"
+        else:
+            word = word[:-3] + "en"
     elif word[-1].lower() == "s":
         choice = random_choice(s_probs)
         if choice == 0:
