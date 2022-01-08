@@ -6,7 +6,7 @@ import time
 
 import credentials
 from translator import get_translation
-from dictionary import key_words, key_phrases
+from dictionary import key_words, two_phrases, three_phrases
 
 api_key = credentials.api_key
 api_key_secret = credentials.api_key_secret
@@ -128,7 +128,13 @@ def tweet_quote():
         quote, author = get_quote()
 
         # search quote for key phrases
-        for phrase in key_phrases:
+        for phrase in three_phrases:
+            if phrase in quote:
+                logger.info(f"found a quote: {quote}")
+                flag = True
+                break
+
+        for phrase in two_phrases:
             if phrase in quote:
                 logger.info(f"found a quote: {quote}")
                 flag = True
