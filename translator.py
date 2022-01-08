@@ -2,9 +2,12 @@ from dictionary import key_words, two_phrases, three_phrases
 import random
 from itertools import accumulate
 from operator import add
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+good_consonants = {"B", "D", "F", "G", "K", "L", "M", "N", "P", "S", "T", "H", "R", "W", "Z", "Y"}
 
 def get_translation(text):
-    # need to figure out a way to maintain capitilizations
     replaced = text
     # 1. iterate through key phrases searching for existence and replace
     for phrase in three_phrases:
@@ -54,8 +57,8 @@ def get_translation(text):
             else:
                 # 4. use randomization rules to spice up the rest
                 if curr_word:
-                    #res += spice_up(curr_word)
-                    res += curr_word
+                    res += spice_up(curr_word)
+                    #res += curr_word
             if i != len(replaced)-1:
                 res += ch
             curr_word = ""
@@ -76,17 +79,17 @@ def random_choice(probs):
             return index
     return -1 # should never be returned
 
-good_consonants = {"B", "D", "F", "G", "K", "L", "M", "N", "P", "S", "T", "H", "R", "W", "Z", "Y"}
-
 def spice_up(word):
     """
     Add some gungan type slang to the word.
     """
     s_probs = [.2] # index 0 represents add "a" after a word that ends in "s"
-    e_probs = [.25, .1] # index 0 represents add "n" to a word that ends in "e", index 1 represents add "sa"
-    cons_probs = [.15] # index 0 represents adding "en" to a word that ends in a "good consonant"
+    e_probs = [.25, .10] # index 0 represents add "n" to a word that ends in "e", index 1 represents add "sa"
+    cons_probs = [.35] # index 0 represents adding "en" to a word that ends in a "good consonant"
 
     all_caps = word == word.upper()
+    doc = nlp(word)
+    word_type = doc[0].pos_
 
     if word[-3:].lower() == "ing":
         if all_caps:
@@ -100,7 +103,7 @@ def spice_up(word):
                 word += "A"
             else:
                 word += "a"
-    elif word[-1].lower() == "e":
+    elif word[-1].lower() == "e" and (word_type == "VERB" or word_type == "NOUN"):
         choice = random_choice(e_probs)
         if choice == 0:
             if all_caps:
@@ -112,11 +115,12 @@ def spice_up(word):
                 word += "SA"
             else:
                 word += "sa"
-    elif word[-1].upper() in good_consonants:
-        choice = random_choice(cons_probs)
-        if choice == 0:
-            if all_caps:
-                word += "EN"
-            else:
-                word += "en"
+    elif word[-1].upper() in good_consonants and (word_type == "VERB" or word_type == "NOUN"):
+        if len(word) > 1 and word[-2] != "e":
+            choice = random_choice(cons_probs)
+            if choice == 0:
+                if all_caps:
+                    word += "EN"
+                else:
+                    word += "en"
     return word
