@@ -75,6 +75,7 @@ def respondToTweet(file="tweet_id.txt"): # default file
     mentions = api.mentions_timeline(since_id=last_id)
 
     if len(mentions) == 0: # no new tweets to respond to
+        logger.info("no mentions found")
         return
 
     logger.info("someone mentioned me...")
