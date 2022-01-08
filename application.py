@@ -15,7 +15,7 @@ def daily_quote():
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=tweet_replies, trigger="interval", seconds=120)
-scheduler.add_job(func=daily_quote, trigger="interval", seconds=1800)
+scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
 scheduler.start()
 
 application = Flask(__name__)
@@ -24,7 +24,6 @@ application = Flask(__name__)
 @application.route("/")
 def index():
     return "Follow @jarjarbot1!"
-
 
 atexit.register(lambda: scheduler.shutdown())
 

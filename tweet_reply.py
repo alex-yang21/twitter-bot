@@ -5,6 +5,8 @@ import logging
 import time
 
 import credentials
+from translator import get_translation
+from dictionary import key_words, key_phrases
 
 api_key = credentials.api_key
 api_key_secret = credentials.api_key_secret
@@ -26,10 +28,10 @@ logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
 logger.setLevel(logging.INFO)
 
-def get_translation(text):
+def get_translation_api(text):
     """
     Receives the desired text to translate from twitter.
-    Returns Gungan translation.
+    Returns Gungan translation using an online API.
     """
     payload = {"text": text}
     try:
@@ -81,16 +83,26 @@ def respondToTweet(file="tweet_id.txt"): # default file
         new_id = mention.id
         if keyword in mention.text.lower(): # chosen keyword above
             logger.info("Responding back to {}".format(mention.id))
+            replied_tweet = None
+
             try:
-                logger.info("finding parent tweet")
-                replied_tweet = api.get_status(mention.in_reply_to_status_id) # grab the tweet that this mention is replying to
-                logger.info("translating tweet")
+                logger.info("Finding parent tweet")
+                replied_tweet = api.get_status(id=mention.in_reply_to_status_id, tweet_mode="extended") # grab the tweet that this mention is replying to
+            except:
+                logger.info("Can't find parent tweet {}".format(mention.in_reply_to_status_id))
+
+            try:
+                logger.info(f"Translating tweet: {replied_tweet.text}")
                 translation = get_translation(replied_tweet.text)
-                logger.info(f"Tweet: {replied_tweet.text}. Translated tweet: {translation}")
-                logger.info("replying to tweet")
+                logger.info(f"Translated tweet: {translation}")
+            except:
+                logger.info("Error in translating {}".format(mention.id))
+
+            try:
+                logger.info("Replying to tweet")
                 api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
             except:
-                logger.info("Already replied to {}".format(mention.id))
+                logger.info("Error in replying or already replied to {}".format(mention.id))
 
     put_last_tweet(file, new_id)
 
@@ -104,13 +116,6 @@ def get_quote():
         logger.info("Error while grabbing the quote.")
     res = json.loads(response.text)
     return res['content'], res['author']
-
-key_words = {"I", "me", "my", "you", "your", "we", "they", "he", "she", "there", "them", "this", "that", "yes", "no", "one", "two",
-              "three", "four", "five", "six", "seven", "eight", "nine", "ten", "very", "great", "superior", "superb", "amazing",
-              "okay", "friends", "crazy", "go", "amazing", "happy", "ship", "makes", "rude", "coward", "hello", "machine",
-              "here", "help", "floor", "sky", "trash", "God", "god", "wind", "forest", "fire", "love", "rain", "eating", "much",
-              "money", "look", "speak", "say", "pals", "human", "story", "long", "make", "boys", "boy"}
-key_phrases = ["it is", "a lot", "to be"]
 
 def tweet_quote():
     """
