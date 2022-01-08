@@ -171,6 +171,8 @@ our_dict = {
     "invitation": "invitateon",
     "invitations": "invitateons",
     "these": "dese",
+    "was": "wasa",
+    "were" : "wasa",
 
     # names
     "alex": "alexsa",
