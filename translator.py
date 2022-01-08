@@ -48,17 +48,19 @@ def get_translation(text):
             if curr_word.lower() in key_words:
                 translated_word = key_words[curr_word.lower()]
                 # we keep note of what capitalization the user may have had
-                if curr_word == curr_word.upper():
+                if curr_word == curr_word.upper() and curr_word != "I":
                     res += translated_word.upper()
                 elif curr_word == curr_word.capitalize():
-                    res += translated_word.capitalize()
+                    if curr_word == "I" and res and res[-1] == " ": # edge case where the word is "I" and in the middle of sentence
+                        res += translated_word
+                    else:
+                        res += translated_word.capitalize()
                 else:
                     res += translated_word
             else:
                 # 4. use randomization rules to spice up the rest
                 if curr_word:
                     res += spice_up(curr_word)
-                    #res += curr_word
             if i != len(replaced)-1:
                 res += ch
             curr_word = ""
@@ -81,7 +83,7 @@ def random_choice(probs):
 
 def spice_up(word):
     """
-    Add some gungan type slang to the word.
+    Add some gungan type slang to the word. Translator improvises based on weighted probabilities.
     """
     s_probs = [.2] # index 0 represents add "a" after a word that ends in "s"
     e_probs = [.25, .10] # index 0 represents add "n" to a word that ends in "e", index 1 represents add "sa"
@@ -91,7 +93,7 @@ def spice_up(word):
     doc = nlp(word)
     word_type = doc[0].pos_
 
-    if word[-3:].lower() == "ing":
+    if word[-3:].lower() == "ing": # always change "ing" to "en"
         if all_caps:
             word = word[:-3] + "EN"
         else:

@@ -9,7 +9,7 @@ Our rules:
   3. Expand the Gungan vocabulary as seen fit while keeping integrity of the language
   4. Rules that can require some randomization (ex: execute 30% of the time):
     - add 'a' after a word that ends in 's' (20%)
-    - add 'n' after a verb/noun that ends in 'e' (20%)
+    - add 'n' or 'sa' after a verb/noun that ends in 'e' (25%/10%)
     - replace 'ing' from any verbs with 'en'
-    - add 'en' to verbs/nouns that end in good consonants, not 'y', 'j', 'x', etc (15%)
+    - add 'en' to verbs/nouns that end in good consonants, not "q", 'j', 'x', etc (35%)
   ...

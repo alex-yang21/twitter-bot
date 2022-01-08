@@ -6,8 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 
 def tweet_replies():
-    tweet_reply.respondToTweet('tweet_id.txt')
-    print("Success")
+    tweet_reply.respondToTweet("tweet_id.txt")
 
 def daily_quote():
     tweet_reply.tweet_quote()

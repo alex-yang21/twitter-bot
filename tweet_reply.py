@@ -13,7 +13,7 @@ api_key_secret = credentials.api_key_secret
 access_token = credentials.access_token
 access_token_secret = credentials.access_token_secret
 
-url = "https://api.funtranslations.com/translate/gungan.json"
+url = "https://api.funtranslations.com/translate/gungan.json" # not using anymore
 quote_url = "https://api.quotable.io/random"
 keyword = "translate"
 
@@ -31,7 +31,7 @@ logger.setLevel(logging.INFO)
 def get_translation_api(text):
     """
     Receives the desired text to translate from twitter.
-    Returns Gungan translation using an online API.
+    Returns Gungan translation using an online API. No longer used.
     """
     payload = {"text": text}
     try:
