@@ -15,7 +15,10 @@ def get_translation(text):
         translated_phrase = two_phrases[phrase]
         replaced = replaced.replace(phrase, translated_phrase)
 
-    # 2. search the text for any key words and replace
+    # 2. if there are ever exists 's a ', combine into one
+    replaced = replaced.replace("s a ", "sa ")
+
+    # 3. search the text for any key words and replace
     res = ""
     curr_word = ""
     all_caps = True
@@ -39,8 +42,9 @@ def get_translation(text):
                 else:
                     res += translated_word
             else:
-                # 3. use randomization rules to spice up the rest
-                res += curr_word
+                # 4. use randomization rules to spice up the rest
+                if curr_word:
+                    res += spice_up(curr_word)
             if i != len(replaced)-1:
                 res += ch
             curr_word = ""
@@ -83,7 +87,7 @@ def spice_up(word):
                 word = word[:-3] + "EN"
             else:
                 word = word[:-3] + "en"
-        else:
+        elif choice == 1:
             word = word[:-3]
     elif word[-1].lower() == "s":
         choice = random_choice(s_probs)
@@ -99,7 +103,7 @@ def spice_up(word):
                 word += "N"
             else:
                 word += "n"
-        else:
+        elif choice == 1:
             if all_caps:
                 word += "SA"
             else:
