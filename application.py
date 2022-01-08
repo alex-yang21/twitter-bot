@@ -13,7 +13,7 @@ def daily_quote():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=tweet_replies, trigger="interval", seconds=30)
+scheduler.add_job(func=tweet_replies, trigger="interval", seconds=300)
 scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
 scheduler.start()
 
