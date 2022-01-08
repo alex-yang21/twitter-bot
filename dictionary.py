@@ -84,7 +84,6 @@ bombad_words = [
 for word in bombad_words:
     common_words[word] = "bombad"
 
-
 pronouns = {
     "me": "mesa",
     "my": "mesa",
@@ -103,7 +102,7 @@ pronouns = {
     "our": "wesa",
     "ours": "wesa",
     "they": "daysa",
-    "them": "themsa",
+    "them": "themsa"
 }
 
 gungan_basic = numbers | common_words | pronouns | star_wars_words
@@ -115,6 +114,7 @@ old_gungan = {
     "rocket": "bodooka",
     "floor": "feetwalken",
     "trash": "garbareeno",
+    "garbage": "garbareeno",
     "stove": "gasser",
     "drink": "gup",
     "wind": "huffmaker",
@@ -140,8 +140,7 @@ our_dict = {
     "coward": "fraidee frog",
     "than": "dan",
     "for": "per",
-    "be": "besa",
-    
+    "be": "besa"
 }
 
 # our final gungan dictionary

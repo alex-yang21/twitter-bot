@@ -7,8 +7,8 @@ Our rules:
   1. Follow English grammar, just use 1-1 mappings. This may conflict with some Gungan grammar.
   2. Expand the Gungan vocabulary as seen fit while keeping integrity of the language
   3. Rules that can require some randomization (ex: execute 30% of the time):
-    - add 'a' after a word that ends in 's' (40% of time)
-    - add 'n' or 'sa' after a word that ends in 'e' (25% each)
-    - replace 'ing' from any verbs with 'en' or simple remove the 'ing' (50/50 split)
-    - add 'en' to words that end in good consonants, not 'y', 'j', 'x', etc (15% of time)
+    - add 'a' after a word that ends in 's' (20%)
+    - add 'n' or 'sa' after a word that ends in 'e' (20%/10%)
+    - replace 'ing' from any verbs with 'en' or simply remove the 'ing' (50/50)
+    - add 'en' to words that end in good consonants, not 'y', 'j', 'x', etc (15%)
   ...
