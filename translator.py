@@ -90,14 +90,13 @@ def spice_up(word):
     cons_probs = [.35] # index 0 represents adding "en" to a word that ends in a "good consonant"
 
     all_caps = word == word.upper()
-    doc = nlp(word)
-    word_type = doc[0].pos_
 
     if word[-3:].lower() == "ing": # always change "ing" to "en"
         if all_caps:
             word = word[:-3] + "EN"
         else:
             word = word[:-3] + "en"
+
     elif word[-1].lower() == "s":
         choice = random_choice(s_probs)
         if choice == 0:
@@ -105,24 +104,31 @@ def spice_up(word):
                 word += "A"
             else:
                 word += "a"
-    elif word[-1].lower() == "e" and (word_type == "VERB" or word_type == "NOUN"):
-        choice = random_choice(e_probs)
-        if choice == 0:
-            if all_caps:
-                word += "N"
-            else:
-                word += "n"
-        elif choice == 1:
-            if all_caps:
-                word += "SA"
-            else:
-                word += "sa"
-    elif word[-1].upper() in good_consonants and (word_type == "VERB" or word_type == "NOUN"):
-        if len(word) > 1 and word[-2] != "e":
-            choice = random_choice(cons_probs)
+
+    elif word[-1].lower() == "e":
+        doc = nlp(word)
+        word_type = doc[0].pos_
+        if word_type == "VERB" or word_type == "NOUN":
+            choice = random_choice(e_probs)
             if choice == 0:
                 if all_caps:
-                    word += "EN"
+                    word += "N"
                 else:
-                    word += "en"
+                    word += "n"
+            elif choice == 1:
+                if all_caps:
+                    word += "SA"
+                else:
+                    word += "sa"
+    elif word[-1].upper() in good_consonants:
+        if len(word) > 1 and word[-2] != "e":
+            doc = nlp(word)
+            word_type = doc[0].pos_
+            if word_type == "VERB" or word_type == "NOUN":
+                choice = random_choice(cons_probs)
+                if choice == 0:
+                    if all_caps:
+                        word += "EN"
+                    else:
+                        word += "en"
     return word
