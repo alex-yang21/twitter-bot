@@ -9,6 +9,7 @@ good_consonants = {"B", "D", "F", "G", "K", "L", "M", "N", "P", "S", "T", "H", "
 
 def get_translation(text):
     replaced = text
+
     # 1. iterate through key phrases searching for existence and replace
     for phrase in three_phrases:
         translated_phrase = None
@@ -34,10 +35,16 @@ def get_translation(text):
             translated_phrase = two_phrases[phrase].capitalize()
             replaced = replaced.replace(phrase.capitalize(), translated_phrase)
 
-    # 2. if there are ever exists 's a ', combine into 'sa '
+    # 2. Search for noun chunks and for later to modify words that are root nouns
+    doc = nlp(replaced)
+    valid_nouns = set()
+    for chunk in doc.noun_chunks:
+        valid_nouns.add(chunk.root.text)
+
+    # 3. if there ever exists 's a ', combine into 'sa '
     replaced = replaced.replace("s a ", "sa ")
 
-    # 3. search the text for any key words and replace
+    # 4. search the text for any key words and replace
     res = ""
     curr_word = ""
     replaced += "." # used to make iteration clean
@@ -58,37 +65,19 @@ def get_translation(text):
                 else:
                     res += translated_word
             else:
-                # 4. use randomization rules to spice up the rest
+                # 4. use othe rules to spice up the rest
                 if curr_word:
-                    res += spice_up(curr_word)
+                    res += spice_up(curr_word, valid_nouns)
             if i != len(replaced)-1:
                 res += ch
             curr_word = ""
 
     return res
 
-def random_choice(probs):
+def spice_up(word, valid_nouns):
     """
-    probs is an array of that maps percentages to indices for our choices.
-    Return an indice that is the choice we go with.
+    Add some gungan type slang to the word.
     """
-    cum_sum = accumulate(probs, add)
-    cum_sum = list(cum_sum)
-    cum_sum.append(1.0)
-    val = random.random()
-    for index, lvl in enumerate(cum_sum):
-        if val < lvl:
-            return index
-    return -1 # should never be returned
-
-def spice_up(word):
-    """
-    Add some gungan type slang to the word. Translator improvises based on weighted probabilities.
-    """
-    s_probs = [.2] # index 0 represents add "a" after a word that ends in "s"
-    e_probs = [.25, .10] # index 0 represents add "n" to a word that ends in "e", index 1 represents add "sa"
-    cons_probs = [.35] # index 0 represents adding "en" to a word that ends in a "good consonant"
-
     all_caps = word == word.upper()
 
     if word[-3:].lower() == "ing": # always change "ing" to "en"
@@ -97,38 +86,28 @@ def spice_up(word):
         else:
             word = word[:-3] + "en"
 
-    elif word[-1].lower() == "s":
-        choice = random_choice(s_probs)
-        if choice == 0:
-            if all_caps:
-                word += "A"
-            else:
-                word += "a"
-
     elif word[-1].lower() == "e":
         doc = nlp(word)
-        word_type = doc[0].pos_
-        if word_type == "VERB" or word_type == "NOUN":
-            choice = random_choice(e_probs)
-            if choice == 0:
-                if all_caps:
-                    word += "N"
-                else:
-                    word += "n"
-            elif choice == 1:
-                if all_caps:
-                    word += "SA"
-                else:
-                    word += "sa"
+        word_type = doc[0].tag_
+        if word_type in {"VB", "VBP", "VBZ"}:
+            if all_caps:
+                word += "N"
+            else:
+                word += "n"
+        elif word_type == "NN" and len(word) > 1 and word[-2].lower() != "s" and word in valid_nouns: # may remove
+            if all_caps:
+                word += "SA"
+            else:
+                word += "sa"
+
     elif word[-1].upper() in good_consonants:
-        if len(word) > 1 and word[-2] not in "aeiouy":
+        if len(word) > 1 and word[-2].lower() not in {"a", "e", "i", "o", "u", "y"}:
             doc = nlp(word)
-            word_type = doc[0].pos_
-            if word_type == "VERB" or word_type == "NOUN":
-                choice = random_choice(cons_probs)
-                if choice == 0:
-                    if all_caps:
-                        word += "EN"
-                    else:
-                        word += "en"
+            word_type = doc[0].tag_
+            if word_type in {"VB", "VBP", "VBZ"} or (word_type == "NN" and word in valid_nouns):
+                if all_caps:
+                    word += "EN"
+                else:
+                    word += "en"
+
     return word

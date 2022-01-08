@@ -7,9 +7,8 @@ Our rules:
   1. Follow English grammar, just use 1-1 mappings. This may conflict with some Gungan grammar.
   2. If there are ever exists 's a ', combine into 'sa '
   3. Expand the Gungan vocabulary as seen fit while keeping integrity of the language
-  4. Rules that can require some randomization (ex: execute 30% of the time):
-    - add 'a' after a word that ends in 's' (20%)
-    - add 'n' or 'sa' after a verb/noun that ends in 'e' (25%/10%)
+  4. Rules outside of the dictionary:
+    - add 'n'/'sa' after a verb/noun that ends in 'e'
     - replace 'ing' from any verbs with 'en'
-    - add 'en' to verbs/nouns that end in good consonants, not "q", 'j', 'x', etc (35%)
+    - add 'en' to verbs/nouns that end in good consonants, not "q", 'j', 'x', etc
   ...
