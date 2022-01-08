@@ -121,7 +121,7 @@ def spice_up(word):
                 else:
                     word += "sa"
     elif word[-1].upper() in good_consonants:
-        if len(word) > 1 and word[-2] != "e":
+        if len(word) > 1 and word[-2] not in "aeiouy":
             doc = nlp(word)
             word_type = doc[0].pos_
             if word_type == "VERB" or word_type == "NOUN":

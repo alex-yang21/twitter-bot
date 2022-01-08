@@ -88,17 +88,9 @@ def respondToTweet(file="tweet_id.txt"): # default file
             try:
                 logger.info("Finding parent tweet")
                 replied_tweet = api.get_status(id=mention.in_reply_to_status_id, tweet_mode="extended") # grab the tweet that this mention is replying to
-            except:
-                logger.info("Can't find parent tweet {}".format(mention.in_reply_to_status_id))
-
-            try:
-                logger.info(f"Translating tweet: {replied_tweet.text}")
-                translation = get_translation(replied_tweet.text)
+                logger.info(f"Translating tweet: {replied_tweet.full_text}")
+                translation = get_translation(replied_tweet.full_text)
                 logger.info(f"Translated tweet: {translation}")
-            except:
-                logger.info("Error in translating {}".format(mention.id))
-
-            try:
                 logger.info("Replying to tweet")
                 api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
             except:
