@@ -55,7 +55,6 @@ common_words = {
     "stories": "tellos",
     "crazy": "nutsen",
     "nuts": "nutsen",
-    "bat-shit": "nutsen",
     "insane": "nutsen",
     "silly": "nutsen",
     "long": "longo",
@@ -136,7 +135,10 @@ old_gungan = {
     "wind": "huffmaker",
     "eat": "tongue-grab",
     "eats": "tongue-grabs",
-    "eating": "tongue-grabben"
+    "eating": "tongue-grabben",
+    "high": "tup",
+    "up": "tup",
+    "down": "neb"
 }
 
 # some of the words we added in, but a lot still taken from gungan basic wookieeepedia. may be updated
@@ -166,6 +168,7 @@ our_dict = {
     "peace": "peles",
     "invitation": "invitateon",
     "invitations": "invitateons",
+    "these": "dese",
 
     # contractions
     "i'm": "mesa",
@@ -174,6 +177,7 @@ our_dict = {
     "they're": "daysa",
     "we're": "wesa",
     "it's": "isa",
+    "don't" : "no"
 }
 
 # our final gungan dictionary
