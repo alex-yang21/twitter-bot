@@ -173,8 +173,6 @@ our_dict = {
     # names
     "alex": "alexsa",
     "sydney": "sydneysa",
-    "kristof": "kristofsa",
-    "cock": "cawk",
 
     # contractions
     "i'm": "mesa",
