@@ -215,7 +215,18 @@ our_dict = {
     "they'll": "daysa",
     "they're": "daysa",
     "they've": "daysa",
-    "this's": "dis"
+    "this's": "dis",
+    "who's": "whosa",
+    "who're": "whosa",
+    "how's": "howsa",
+    "how're": "howsa",
+    "when's": "whensa",
+    "when're": "whensa",
+    "what's": "whatsa",
+    "what're": "whatsa",
+    "where's": "wheresa",
+    "why's": "whysa",
+    "why're": "whysa"
 }
 
 # our final gungan dictionary
@@ -246,6 +257,24 @@ two_phrases = {
     "to be": "besa",
     "it is": "isa",
     "it was": "isa",
+    "who is": "whosa",
+    "who was": "whosa",
+    "who were": "whosa",
+    "how is": "howsa",
+    "how was": "howsa",
+    "how were": "howsa",
+    "where is": "wheresa",
+    "where was": "wheresa",
+    "where were": "wheresa",
+    "what is": "whatsa",
+    "what was":" whatsa",
+    "what were": "whatsa",
+    "when is": "whensa",
+    "when was": "whensa",
+    "when were": "whensa",
+    "why is": "whysa",
+    "why was": "whysa",
+    "why were": "whysa",
 
     # our phrases
     "do not": "no",

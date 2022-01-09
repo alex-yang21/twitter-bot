@@ -5,7 +5,7 @@ from operator import add
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
-good_consonants = {"B", "D", "F", "G", "K", "L", "M", "N", "P", "S", "T", "H", "R", "W", "Z", "Y"}
+good_consonants = {"B", "D", "F", "G", "K", "L", "M", "N", "P", "T", "H", "R", "W", "Z", "Y"}
 
 def get_translation(text):
     replaced = text
@@ -88,19 +88,19 @@ def spice_up(word, valid_nouns, valid_verbs):
             word = word[:-3] + "en"
 
     elif word[-1].lower() == "e":
-        if word in valid_verbs:
+        if word in valid_verbs and len(word) > 2 and word[-2].lower() not in "aeiouy" and word[-3].lower() not in "aeiouy":
             if all_caps:
                 word += "N"
             else:
                 word += "n"
-        elif len(word) > 1 and word[-2].lower() not in "scxqzj" and word in valid_nouns: # may remove
+        elif word in valid_nouns and len(word) > 2 and word[-2].lower() not in "scxqzj" and word[-3].lower() not in "scxqzj": # may remove
             if all_caps:
                 word += "SA"
             else:
                 word += "sa"
 
     elif word[-1].upper() in good_consonants:
-        if len(word) > 1 and word[-2].lower() not in "aeiouy":
+        if len(word) > 2 and word[-2].lower() != "e":
             if word in valid_verbs or word in valid_nouns:
                 if all_caps:
                     word += "EN"
