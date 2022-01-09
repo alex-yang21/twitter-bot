@@ -1,7 +1,4 @@
 from dictionary import key_words, two_phrases, three_phrases
-import random
-from itertools import accumulate
-from operator import add
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
@@ -35,13 +32,10 @@ def get_translation(text):
             translated_phrase = two_phrases[phrase].capitalize()
             replaced = replaced.replace(phrase.capitalize(), translated_phrase)
 
-    # 2. Search for noun chunks and for later to modify words that are root nouns
+    # 2. Search for noun and verbs that are valid to later modify words
     doc = nlp(replaced)
-    valid_nouns = set()
+    valid_nouns = {chunk.root.text for chunk in doc.noun_chunks if chunk.root.tag_ == "NN"}
     valid_verbs = {token.text for token in doc if token.tag_ in {"VB", "VBP", "VBZ"}}
-    for chunk in doc.noun_chunks:
-        if chunk.root.tag_ == "NN":
-            valid_nouns.add(chunk.root.text)
 
     # 3. if there ever exists 's a ', combine into 'sa '
     replaced = replaced.replace("s a ", "sa ")
