@@ -45,7 +45,7 @@ def get_translation(text):
     curr_word = ""
     replaced += "." # used to make iteration clean
     for i, ch in enumerate(replaced):
-        if ch.isalpha() or ch == "'":
+        if ch.isalpha() or ch == "’":
             curr_word += ch
         else:
             if curr_word.lower() in key_words:
