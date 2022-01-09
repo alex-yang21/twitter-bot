@@ -131,6 +131,7 @@ old_gungan = {
     "floor": "feetwalken",
     "trash": "garbareeno",
     "garbage": "garbareeno",
+    "rubbish": "garbareeno",
     "stove": "gasser",
     "drink": "gup",
     "drinks": "gups",
