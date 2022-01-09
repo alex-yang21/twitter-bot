@@ -174,6 +174,7 @@ our_dict = {
     "these": "dese",
     "was": "wasa",
     "were" : "wasa",
+    "then": "den",
 
     # names
     "alex": "alexsa",
