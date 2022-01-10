@@ -164,7 +164,7 @@ def find_phrases(quote, phrases):
             return True
     return False
 
-def get_tweet_id_from_dm(dm):
+def get_tweet_id_url(dm):
     """
     Gets tweet id from a direct message if a tweet is sent. Else return -1
     """
@@ -174,9 +174,7 @@ def get_tweet_id_from_dm(dm):
     if urls:
         url = urls[0]["expanded_url"]
         url_arr = url.split("/")
-        return int(url_arr[-1])
-    else:
-        return -1
+        return (int(url_arr[-1]), url)
 
 def get_last_dm(file="dm_id.txt"):
     """
@@ -212,9 +210,13 @@ def reply_dms(file="dm_id.txt"):
     dms = api.get_direct_messages(count=20) # don't anticipate doing more than 20 dms per day
 
     logger.info("someone dmed me...")
-    new_id = 0
+    new_id, url = 0, None
     for dm in reversed(dms): # start with oldest dm first
-        new_id = get_tweet_id_from_dm(dm)
+        pair = get_tweet_id_url(dm)
+        if not pair:
+            logger.info("Could not get dmed tweet id or url")
+            continue
+        new_id, url = pair
         if new_id > last_id:
             logger.info("Replying back to {}".format(new_id))
             tweet = None
@@ -225,7 +227,7 @@ def reply_dms(file="dm_id.txt"):
                 translation = get_translation(tweet.full_text)
                 logger.info(f"Translated tweet: {translation}")
                 logger.info("Replying to tweet")
-                api.update_status(status=translation, in_reply_to_status_id=new_id)
+                api.update_status(status=translation, attachment_url=url)
             except:
                 logger.info("Error in replying or already replied to {}".format(new_id))
 
