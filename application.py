@@ -18,7 +18,7 @@ def check_dms():
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=tweet_replies, trigger="interval", seconds=180)
 scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
-scheduler.add_job(func=check_dms, trigger="interval", seconds=1800)
+scheduler.add_job(func=check_dms, trigger="interval", seconds=300)
 
 scheduler.start()
 

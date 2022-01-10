@@ -164,6 +164,12 @@ def find_phrases(quote, phrases):
             return True
     return False
 
+def get_tweet_text(dm):
+    """
+    Gets tweet text from a direct message.
+    """
+    return dm._json["message_create"]["message_data"]["text"]
+
 def get_tweet_id_url(dm):
     """
     Gets tweet id from a direct message if a tweet is sent. Else return -1
@@ -173,6 +179,7 @@ def get_tweet_id_url(dm):
     url = None
     if urls:
         url = urls[0]["expanded_url"]
+        logger.info(f"found url: {url}")
         url_arr = url.split("/")
         return (int(url_arr[-1]), url)
 
@@ -185,17 +192,15 @@ def get_last_dm(file="dm_id.txt"):
     lastId = 1
     if not line: # we have restarted the code, find the most recent mention if any
         logger.info("searching for a previous dm since cold file")
-        dms = api.get_direct_messages(count=1)
+        dms = api.get_direct_messages(count=5)
         if dms:
-            lastId = dm[0]._json["id"] # sorted in reverse chronological order
+            lastId = int(dms[0]._json["id"]) # sorted in reverse chronological order
             f.write(str(lastId))
-            logger.info(f"found the last dm id: {lastId}")
+            text = get_tweet_text(dms[0])
+            logger.info(f"found the last dm. id: {lastId}, text: {text}")
     else:
         lastId = int(line)
         logger.info(f"found most recent dm id on file: {lastId}")
-
-    if lastId == 1:
-        logger.info("No dms yet")
 
     f.close()
     return lastId
@@ -207,17 +212,26 @@ def reply_dms(file="dm_id.txt"):
     Stores most recently fulfilled dm id in file and writes to with newest one.
     """
     last_id = get_last_dm(file)
+    if last_id == 1:
+        logger.info("No dms yet")
+        return
+
     dms = api.get_direct_messages(count=20) # don't anticipate doing more than 20 dms per day
 
-    logger.info("someone dmed me...")
     new_id, url = 0, None
+    flag = False
     for dm in reversed(dms): # start with oldest dm first
+        text = get_tweet_text(dm)
+        dm_id = dm._json["id"]
+        logger.info(f"Getting dm. ID: {dm_id}, tweet text: {text}")
         pair = get_tweet_id_url(dm)
         if not pair:
-            logger.info("Could not get dmed tweet id or url")
+            logger.info("DM had no associated tweet")
             continue
         new_id, url = pair
-        if new_id > last_id:
+        if new_id > last_id: # checks if any new DMs
+            flag = True
+            logger.info("someone dmed me...")
             logger.info("Replying back to {}".format(new_id))
             tweet = None
             try:
@@ -231,8 +245,10 @@ def reply_dms(file="dm_id.txt"):
             except:
                 logger.info("Error in replying or already replied to {}".format(new_id))
 
-    if new_id != 0:
+    if flag:
         put_last_tweet(file, new_id)
+    else:
+        logger.info("No new dms found")
 
 def main():
     respondToTweet()
