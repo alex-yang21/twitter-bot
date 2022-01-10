@@ -43,6 +43,9 @@ def get_translation_api(text):
     return json_obj["contents"]["translated"]
 
 def get_last_tweet(file):
+    """
+    Reads from file the tweet id that we last replied to.
+    """
     f = open(file, "r+")
     line = f.read().strip()
     lastId = 0
@@ -61,6 +64,9 @@ def get_last_tweet(file):
     return lastId
 
 def put_last_tweet(file, Id):
+    """
+    Writes to file the tweet id that we just replied to.
+    """
     f = open(file, "w")
     f.write(str(Id))
     f.close()
@@ -112,7 +118,7 @@ def get_quote():
 
 def tweet_quote():
     """
-    Tweets the retrieved quote. Attempts to find a quote with at least one of these key words above.
+    Tweets the retrieved quote. Attempts to find a quote with at least one key word or phrase.
     """
     quote, author = None, None
     flag = False
@@ -138,7 +144,7 @@ def tweet_quote():
         time.sleep(3)
 
     if not flag:
-        logger.info("Didn't find a good quote.")
+        logger.info("Didn't find a good quote. Try again tomorrow.")
         return
 
     logger.info(f"tweeting quote: {quote}")
@@ -149,6 +155,9 @@ def tweet_quote():
         logger.info("Failed to tweet quote.")
 
 def find_phrases(quote, phrases):
+    """
+    Helper function to find phrases.
+    """
     for phrase in phrases:
         if phrase in quote:
             logger.info(f"found a quote: {quote}")

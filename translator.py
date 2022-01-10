@@ -1,4 +1,4 @@
-from dictionary import key_words, two_phrases, three_phrases, i_phrases
+from dictionary import key_words, two_phrases, three_phrases, i_phrases, four_phrases
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
@@ -19,6 +19,7 @@ def get_translation(text):
     valid_gerunds = {token.text for token in doc if token.tag_ == "VBG"}
 
     # 3. iterate through key phrases searching for existence and replace
+    replaced = replace_phrases(replaced, four_phrases)
     replaced = replace_phrases(replaced, three_phrases)
     replaced = replace_phrases(replaced, two_phrases)
     replaced = replace_phrases(replaced, i_phrases)
@@ -40,11 +41,11 @@ def replace_phrases(replaced, phrases):
             translated_phrase = phrases[phrase]
             replaced = replaced.replace(phrase, translated_phrase)
         elif phrase.upper() in replaced:
-            translated_phrase = phrases[phrase].upper()
-            replaced = replaced.replace(phrase.upper(), translated_phrase)
+            translated_phrase = phrases[phrase]
+            replaced = replaced.replace(phrase.upper(), translated_phrase.upper())
         elif phrase.capitalize() in replaced:
-            translated_phrase = phrases[phrase].capitalize()
-            replaced = replaced.replace(phrase.capitalize(), translated_phrase)
+            translated_phrase = phrases[phrase]
+            replaced = replaced.replace(phrase.capitalize(), translated_phrase.capitalize())
 
     return replaced
 

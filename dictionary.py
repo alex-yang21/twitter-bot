@@ -167,7 +167,7 @@ our_dict = {
     "cowards": "fraidee frogs",
     "than": "dan",
     "for": "per",
-    "be": "besa",
+    # "be": "besa",
     "like": "liken",
     "expect": "spect",
     "love": "luv",
@@ -177,9 +177,10 @@ our_dict = {
     "invitations": "invitateons",
     "these": "dese",
     "was": "wasa",
-    "were" : "wasa",
+    "were": "wasa",
     "then": "den",
     "with": "wid",
+    "something": "sometin",
 
     # names
     "alex": "alexsa",
@@ -207,92 +208,6 @@ our_dict = {
     "ion": "mesa no",
     "ain't": "isa not",
     "aint": "isa not",
-
-    # contractions missing apostrophes or without relevant base words
-    "im": "mesa",
-    "hes": "hesa",
-    "shes": "shesa",
-    "theyre": "daysa",
-    "weve": "wesa",
-    "youre": "yousa",
-    "youd": "yousa",
-    "youve": "yousa",
-    "youll": "yousa",
-    "don't" : "no",
-    "dont": "no",
-    "didn't": "no",
-    "didnt": "no",
-    "arent": "isa not",
-    "hed": "hesa",
-    "thats": "dats",
-    "thatd": "dats",
-    "theyll": "daysa",
-    "theres": "dalees",
-    "theyre": "daysa",
-    "theyve": "daysa",
-    "aren't": "isa not",
-    "whos": "whosa",
-    "hows": "howsa",
-    "howre": "howsa",
-    "whens": "whensa",
-    "whenre": "whensa",
-    "whats": "whatsa",
-    "whatre": "whatsa",
-    "wheres": "wheresa",
-    "whys": "whysa",
-    "whyre": "whysa"
-}
-
-# our final gungan dictionary
-key_words = {**gungan_basic, **old_gungan, **our_dict}
-
-two_phrases = {
-    "a lot": "mui",
-    "he is": "hesa",
-    "he was": "hesa",
-    "did he": "hesa",
-    "she is": "shesa",
-    "she was": "shesa",
-    "did she": "shesa",
-    "they are": "daysa",
-    "they were": "daysa",
-    "did they": "daysa",
-    "you are": "yousa",
-    "you were": "yousa",
-    "did you": "yousa",
-    "you guys": "yous",
-    "you all": "yous",
-    "you lot": "yous",
-    "we are": "wesa",
-    "we were": "wesa",
-    "to be": "besa",
-    "it is": "isa",
-    "it was": "isa",
-    "who is": "whosa",
-    "who was": "whosa",
-    "who were": "whosa",
-    "how is": "howsa",
-    "how was": "howsa",
-    "how were": "howsa",
-    "where is": "wheresa",
-    "where was": "wheresa",
-    "where were": "wheresa",
-    "what is": "whatsa",
-    "what was":" whatsa",
-    "what were": "whatsa",
-    "when is": "whensa",
-    "when was": "whensa",
-    "when were": "whensa",
-    "why is": "whysa",
-    "why was": "whysa",
-    "why were": "whysa",
-
-    # our phrases
-    "do not": "no",
-    "did not": "no",
-    "to the": "tada",
-    "see ya": "selongabye",
-    "it's a": "isa",
 
     # contractions
     "he's": "hesa",
@@ -332,6 +247,86 @@ two_phrases = {
     "where's": "wheresa",
     "why's": "whysa",
     "why're": "whysa",
+
+    # contractions missing apostrophes or without relevant base words
+    "im": "mesa",
+    "hes": "hesa",
+    "shes": "shesa",
+    "theyre": "daysa",
+    "weve": "wesa",
+    "youre": "yousa",
+    "youd": "yousa",
+    "youve": "yousa",
+    "youll": "yousa",
+    "don't": "no",
+    "dont": "no",
+    "didn't": "no",
+    "didnt": "no",
+    "arent": "isa not",
+    "hed": "hesa",
+    "thats": "dats",
+    "thatd": "dats",
+    "theyll": "daysa",
+    "theres": "dalees",
+    "theyre": "daysa",
+    "theyve": "daysa",
+    "aren't": "isa not",
+    "whos": "whosa",
+    "hows": "howsa",
+    "howre": "howsa",
+    "whens": "whensa",
+    "whenre": "whensa",
+    "whats": "whatsa",
+    "whatre": "whatsa",
+    "wheres": "wheresa",
+    "whys": "whysa",
+    "whyre": "whysa"
+}
+
+# our final gungan dictionary
+key_words = {**gungan_basic, **old_gungan, **our_dict}
+
+two_phrases = {
+    "a lot": "mui",
+    "he is ": "hesa ",
+    "did he ": "hesa ",
+    "did she ": "shesa ",
+    "they are ": "daysa ",
+    "did they ": "daysa ",
+    "you are ": "yousa ",
+    "did you ": "yousa ",
+    "you guys": "yous",
+    "you all": "yous",
+    "you lot": "yous",
+    "we are ": "wesa ",
+    "to be": "besa",
+    "it is ": "isa ",
+    "who is ": "whosa ",
+    "how is ": "howsa ",
+    "where is ": "wheresa ",
+    "what is ": "whatsa ",
+    "when is ": "whensa ",
+    "why is ": "whysa ",
+
+    # negations of two phrases
+    "he isn't": "hesa not",
+    "he isnt": "hesa not",
+    "they aren't": "daysa not",
+    "they arent": "daysa not",
+    "you aren't": "yousa not",
+    "you arent": "yousa not",
+    "we aren't": "wesa not",
+    "we arent": "wesa not",
+    "it isn't": "isa not",
+    "it isnt": "isa not",
+
+    # our phrases
+    "do not": "no",
+    "did not": "no",
+    " to the": " tada ",
+    "see ya": "selongabye",
+    "it's a ": "isa ",
+    " is a ": " isa "
 }
 
 three_phrases = {
@@ -339,14 +334,21 @@ three_phrases = {
     "see you later": "selongabye",
     "see ya later": "selongabye",
     "all of you": "all-n youse",
-    "it is a": "isa",
-    "into the": "in tada", # technically only 2 but needs precedence over "to the"
-    "a lot of": "mui"
+    "it is a ": "isa ",
+    "into the ": "in tada ", # technically only 2 but needs precedence over "to the"
+    "a lot of ": "mui ",
+
+    # # here because "she is" contains "he is" and so on
+    "she is ": "shesa ",
+}
+
+four_phrases = {
+    "she isn't": "shesa not",
+    "she isnt": "shesa not",
 }
 
 i_phrases = {
     "i am": "mesa",
-    "i was": "mesa",
     "i'm": "mesa",
     "i'd": "mesa",
     "i'll": "mesa",
