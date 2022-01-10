@@ -222,7 +222,7 @@ def reply_dms(file="dm_id.txt"):
     flag = False
     for dm in reversed(dms): # start with oldest dm first
         text = get_tweet_text(dm)
-        dm_id = dm._json["id"]
+        dm_id = int(dm._json["id"])
         url = get_tweet_url(dm)
         logger.info(f"Getting dm. ID: {dm_id}, tweet text: {text}")
         if not url:
