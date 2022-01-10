@@ -170,8 +170,9 @@ def get_tweet_id_from_dm(dm):
     """
     dm_data = dm._json["message_create"]["message_data"]
     urls = dm_data["entities"]["urls"]
+    url = None
     if urls:
-        url = urls[0]["expanded_url"])
+        url = urls[0]["expanded_url"]
         url_arr = url.split("/")
         return int(url_arr[-1])
     else:

@@ -38,6 +38,8 @@ common_words = {
     "okay": "okeeday",
     "ok": "okeeday",
     "look": "looky",
+    "smiles": "smilin",
+    "smile": "smilin",
     "happy": "smilin",
     "speak": "spake",
     "say": "spake",
