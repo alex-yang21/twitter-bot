@@ -170,7 +170,7 @@ def get_tweet_text(dm):
     """
     return dm._json["message_create"]["message_data"]["text"]
 
-def get_tweet_id_url(dm):
+def get_tweet_url(dm):
     """
     Gets tweet id from a direct message if a tweet is sent. Else return -1
     """
@@ -181,7 +181,7 @@ def get_tweet_id_url(dm):
         url = urls[0]["expanded_url"]
         logger.info(f"found url: {url}")
         url_arr = url.split("/")
-        return (int(url_arr[-1]), url)
+        return url
 
 def get_last_dm(file="dm_id.txt"):
     """
@@ -218,35 +218,34 @@ def reply_dms(file="dm_id.txt"):
 
     dms = api.get_direct_messages(count=20) # don't anticipate doing more than 20 dms per day
 
-    new_id, url = 0, None
+    dm_id, url = 0, None
     flag = False
     for dm in reversed(dms): # start with oldest dm first
         text = get_tweet_text(dm)
         dm_id = dm._json["id"]
+        url = get_tweet_url(dm)
         logger.info(f"Getting dm. ID: {dm_id}, tweet text: {text}")
-        pair = get_tweet_id_url(dm)
-        if not pair:
+        if not url:
             logger.info("DM had no associated tweet")
             continue
-        new_id, url = pair
-        if new_id > last_id: # checks if any new DMs
+        if dm_id > last_id: # checks if any new DMs
             flag = True
             logger.info("someone dmed me...")
-            logger.info("Replying back to {}".format(new_id))
+            logger.info("Replying back to {}".format(dm_id))
             tweet = None
             try:
                 logger.info("Finding tweet")
-                tweet = api.get_status(id=new_id, tweet_mode="extended")
+                tweet = api.get_status(id=dm_id, tweet_mode="extended")
                 logger.info(f"Translating tweet: {tweet.full_text}")
                 translation = get_translation(tweet.full_text)
                 logger.info(f"Translated tweet: {translation}")
                 logger.info("Replying to tweet")
                 api.update_status(status=translation, attachment_url=url)
             except:
-                logger.info("Error in replying or already replied to {}".format(new_id))
+                logger.info("Error in replying or already replied to {}".format(dm_id))
 
     if flag:
-        put_last_tweet(file, new_id)
+        put_last_tweet(file, dm_id)
     else:
         logger.info("No new dms found")
 
