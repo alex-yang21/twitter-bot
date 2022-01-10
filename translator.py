@@ -86,7 +86,7 @@ def spice_up(word, valid_nouns, valid_verbs, valid_gerunds):
     """
     all_caps = word == word.upper()
 
-    if word[-3:].lower() == "ing" and word in valid_gerunds: # always change "ing" words to "en"
+    if word[-3:].lower() == "ing" and word in valid_gerunds and len(word) > 5 and word[-4] != "e": # change "ing" words to "en"
         if all_caps:
             word = word[:-3] + "EN"
         else:

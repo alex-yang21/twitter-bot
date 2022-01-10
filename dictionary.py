@@ -189,6 +189,7 @@ our_dict = {
     "cock": "cawk",
 
     # social media slang
+    "tweet": "tweeten",
     "rt": "retweeten",
     "gg": "good gamen",
     "idk": "mesa no know",

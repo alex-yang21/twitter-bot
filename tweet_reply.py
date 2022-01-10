@@ -114,7 +114,7 @@ def get_quote():
     except:
         logger.info("Error while grabbing the quote.")
     res = json.loads(response.text)
-    return res['content'], res['author']
+    return res["content"], res["author"]
 
 def tweet_quote():
     """
@@ -163,6 +163,73 @@ def find_phrases(quote, phrases):
             logger.info(f"found a quote: {quote}")
             return True
     return False
+
+def get_tweet_id_from_dm(dm):
+    """
+    Gets tweet id from a direct message if a tweet is sent. Else return -1
+    """
+    dm_data = dm._json["message_create"]["message_data"]
+    urls = dm_data["entities"]["urls"]
+    if urls:
+        url = urls[0]["expanded_url"])
+        url_arr = url.split("/")
+        return int(url_arr[-1])
+    else:
+        return -1
+
+def get_last_dm(file="dm_id.txt"):
+    """
+    Reads from file the dm id that we last fulfilled. Or finds the most recent dm id.
+    """
+    f = open(file, "r+")
+    line = f.read().strip()
+    lastId = 1
+    if not line: # we have restarted the code, find the most recent mention if any
+        logger.info("searching for a previous dm since cold file")
+        dms = api.get_direct_messages(count=1)
+        if dms:
+            lastId = dm[0]._json["id"] # sorted in reverse chronological order
+            f.write(str(lastId))
+            logger.info(f"found the last dm id: {lastId}")
+    else:
+        lastId = int(line)
+        logger.info(f"found most recent dm id on file: {lastId}")
+
+    if lastId == 1:
+        logger.info("No dms yet")
+
+    f.close()
+    return lastId
+
+
+def reply_dms(file="dm_id.txt"):
+    """
+    Checks for direct messages of tweets to respond to with translations.
+    Stores most recently fulfilled dm id in file and writes to with newest one.
+    """
+    last_id = get_last_dm(file)
+    dms = api.get_direct_messages(count=20) # don't anticipate doing more than 20 dms per day
+
+    logger.info("someone dmed me...")
+    new_id = 0
+    for dm in reversed(dms): # start with oldest dm first
+        new_id = get_tweet_id_from_dm(dm)
+        if new_id > last_id:
+            logger.info("Replying back to {}".format(new_id))
+            tweet = None
+            try:
+                logger.info("Finding tweet")
+                tweet = api.get_status(id=new_id, tweet_mode="extended")
+                logger.info(f"Translating tweet: {tweet.full_text}")
+                translation = get_translation(tweet.full_text)
+                logger.info(f"Translated tweet: {translation}")
+                logger.info("Replying to tweet")
+                api.update_status(status=translation, in_reply_to_status_id=new_id)
+            except:
+                logger.info("Error in replying or already replied to {}".format(new_id))
+
+    if new_id != 0:
+        put_last_tweet(file, new_id)
 
 def main():
     respondToTweet()

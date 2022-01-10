@@ -11,10 +11,15 @@ def tweet_replies():
 def daily_quote():
     tweet_reply.tweet_quote()
 
+def check_dms():
+    tweet_reply.reply_dms("dm_id.txt")
+
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=tweet_replies, trigger="interval", seconds=180)
 scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
+scheduler.add_job(func=check_dms, trigger="interval", seconds=3600)
+
 scheduler.start()
 
 application = Flask(__name__)
