@@ -1,29 +1,51 @@
 from flask import Flask
-import tweet_reply
-
 import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
+import tweepy
+import logging
 
+import credentials
 
-def tweet_replies():
-    tweet_reply.respondToTweet("tweet_id.txt")
+import sys
+sys.path.append("tweets")
+sys.path.append("translation")
+
+# Authenticate to Twitter
+api_key = credentials.api_key
+api_key_secret = credentials.api_key_secret
+access_token = credentials.access_token
+access_token_secret = credentials.access_token_secret
+
+auth = tweepy.OAuthHandler(api_key, api_key_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
+
+# For adding logs in application
+logger = logging.getLogger()
+logging.basicConfig(level=logging.INFO)
+logger.setLevel(logging.INFO)
+
+from tweet_reply import respond_to_tweet
+from tweet_dm import reply_dms
+from tweet_quote import tweet_daily_quote
+
+# background scheduling of jobs
+def check_replies():
+    respond_to_tweet("text_files/tweet_id.txt")
 
 def daily_quote():
-    tweet_reply.tweet_quote()
+    tweet_daily_quote()
 
 def check_dms():
-    tweet_reply.reply_dms("dm_id.txt")
-
+    reply_dms("text_files/dm_id.txt")
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=tweet_replies, trigger="interval", seconds=180)
+scheduler.add_job(func=check_replies, trigger="interval", seconds=300)
 scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
 scheduler.add_job(func=check_dms, trigger="interval", seconds=300)
-
 scheduler.start()
 
 application = Flask(__name__)
-
 
 @application.route("/")
 def index():
