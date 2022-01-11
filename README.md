@@ -3,7 +3,7 @@
 ### https://twitter.com/jarjarbot1 (parody)
 
 ### Translation
-Custom translator is built and explained in the translation directory. Translation is typically a 1-1 mapping but also uses the SpaCy NLP package for noun/verb detection.
+Custom translator is built and explained in the `translation` directory. Translation is typically a 1-1 mapping but also uses the `SpaCy` NLP package for noun/verb detection.
 
 ### User Replies
 Twitter users can tag the bot in reply to a tweet, and the bot will translate the original tweets text and reply tweet.
@@ -15,7 +15,7 @@ Users that the bot follows can direct message the bot tweets, which the bot will
 
 ![Screen Shot 2022-01-11 at 2 46 46 AM](https://user-images.githubusercontent.com/57927187/148928831-aae5a367-570c-44a5-a3d1-10b9257390fb.png)
 
-See tweets directory for more information.
+See `tweets` directory for more information.
 
 ### Credit
 Credit to: https://auth0.com/blog/how-to-make-a-twitter-bot-in-python-using-tweepy/
