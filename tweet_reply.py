@@ -7,6 +7,7 @@ import time
 import credentials
 from translator import get_translation
 from dictionary import key_words, two_phrases, three_phrases, i_phrases
+from banned_words import off_limits
 
 api_key = credentials.api_key
 api_key_secret = credentials.api_key_secret
@@ -96,6 +97,11 @@ def respondToTweet(file="tweet_id.txt"): # default file
                 logger.info("Finding parent tweet")
                 replied_tweet = api.get_status(id=mention.in_reply_to_status_id, tweet_mode="extended") # grab the tweet that this mention is replying to
                 logger.info(f"Translating tweet: {replied_tweet.full_text}")
+                logger.info("Checking for profanity")
+                for word in off_limits:
+                    if word in replied_tweet.text:
+                        logger.info(f"Found profanity: {word}")
+                        assert 1 == 2 # fail the try block
                 translation = get_translation(replied_tweet.full_text)
                 logger.info(f"Translated tweet: {translation}")
                 logger.info("Replying to tweet")
@@ -170,18 +176,16 @@ def get_tweet_text(dm):
     """
     return dm._json["message_create"]["message_data"]["text"]
 
-def get_tweet_url(dm):
+def get_tweet_id_url(dm):
     """
-    Gets tweet id from a direct message if a tweet is sent. Else return -1
+    Gets tweet id and url from a direct message if a tweet is sent. Else return None.
     """
     dm_data = dm._json["message_create"]["message_data"]
     urls = dm_data["entities"]["urls"]
-    url = None
     if urls:
         url = urls[0]["expanded_url"]
-        logger.info(f"found url: {url}")
         url_arr = url.split("/")
-        return url
+        return (url_arr[-1], url)
 
 def get_last_dm(file="dm_id.txt"):
     """
@@ -218,29 +222,38 @@ def reply_dms(file="dm_id.txt"):
 
     dms = api.get_direct_messages(count=20) # don't anticipate doing more than 20 dms per day
 
-    dm_id, url = 0, None
+    dm_id, tweet_id = 0, 0
     flag = False
     for dm in reversed(dms): # start with oldest dm first
         text = get_tweet_text(dm)
         dm_id = int(dm._json["id"])
-        url = get_tweet_url(dm)
-        logger.info(f"Getting dm. ID: {dm_id}, tweet text: {text}")
-        if not url:
+        logger.info(f"Getting dm. dm_id: {dm_id}, tweet text: {text}")
+
+        pair = get_tweet_id_url(dm)
+        if not pair:
             logger.info("DM had no associated tweet")
             continue
+        tweet_id, url = pair
+        logger.info(f"Replying to tweet with tweet id: {tweet_id} and url: {url}")
+
         if dm_id > last_id: # checks if any new DMs
-            flag = True
             logger.info("someone dmed me...")
             logger.info("Replying back to {}".format(dm_id))
             tweet = None
             try:
                 logger.info("Finding tweet")
-                tweet = api.get_status(id=dm_id, tweet_mode="extended")
+                tweet = api.get_status(id=tweet_id, tweet_mode="extended")
                 logger.info(f"Translating tweet: {tweet.full_text}")
+                logger.info("Checking for profanity")
+                for word in off_limits:
+                    if word in replied_tweet.text:
+                        logger.info(f"Found profanity: {word}")
+                        assert 1 == 2 # fail the try block
                 translation = get_translation(tweet.full_text)
                 logger.info(f"Translated tweet: {translation}")
                 logger.info("Replying to tweet")
                 api.update_status(status=translation, attachment_url=url)
+                flag = True
             except:
                 logger.info("Error in replying or already replied to {}".format(dm_id))
 

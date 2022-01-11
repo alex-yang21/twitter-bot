@@ -188,7 +188,14 @@ our_dict = {
     "alex": "alexsa",
     "sydney": "sydsa",
     "kristof": "kristofen",
-    "cock": "cawk",
+
+    # curse words
+    "fuck": "fak",
+    "fucking": "faken",
+    "shit": "shid",
+    "cock": "cawken",
+    "dick": "diken",
+    "bitch": "bishen",
 
     # social media slang
     "tweet": "tweeten",
