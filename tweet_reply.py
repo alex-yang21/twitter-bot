@@ -99,7 +99,7 @@ def respondToTweet(file="tweet_id.txt"): # default file
                 logger.info(f"Translating tweet: {replied_tweet.full_text}")
                 logger.info("Checking for profanity")
                 for word in off_limits:
-                    if word in replied_tweet.text:
+                    if word in replied_tweet.full_text:
                         logger.info(f"Found profanity: {word}")
                         assert 1 == 2 # fail the try block
                 translation = get_translation(replied_tweet.full_text)
@@ -246,7 +246,7 @@ def reply_dms(file="dm_id.txt"):
                 logger.info(f"Translating tweet: {tweet.full_text}")
                 logger.info("Checking for profanity")
                 for word in off_limits:
-                    if word in replied_tweet.text:
+                    if word in tweet.full_text:
                         logger.info(f"Found profanity: {word}")
                         assert 1 == 2 # fail the try block
                 translation = get_translation(tweet.full_text)

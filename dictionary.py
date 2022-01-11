@@ -189,10 +189,14 @@ our_dict = {
     "sydney": "sydsa",
     "kristof": "kristofen",
 
-    # curse words
+    # acceptable curse words
     "fuck": "fak",
+    "fuckin": "faken",
     "fucking": "faken",
     "shit": "shid",
+    "shitted": "shidded",
+    "shitten": "shidden",
+    "shitting": "shidden",
     "cock": "cawken",
     "dick": "diken",
     "bitch": "bishen",
@@ -333,7 +337,7 @@ two_phrases = {
     # our phrases
     "do not": "no",
     "did not": "no",
-    " to the": " tada ",
+    " to the": " tada",
     "see ya": "selongabye",
     "it's a ": "isa ",
     " is a ": " isa "
