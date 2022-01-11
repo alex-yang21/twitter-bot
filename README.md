@@ -1,4 +1,4 @@
-# Gungan Translator Twitter Bot
+# Gungan Translator Twitter Bot with Tweepy
 
 ### https://twitter.com/jarjarbot1 (parody)
 
