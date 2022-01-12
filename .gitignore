@@ -1,0 +1,7 @@
+__pycache__/
+venv/
+.ebextensions
+.DS_Store
+translation/.DS_Store
+tweets/.DS_Store
+text_files/.DS_Store

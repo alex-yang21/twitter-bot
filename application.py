@@ -4,17 +4,16 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import tweepy
 import logging
 
-import credentials
-
 import sys
+import os
 sys.path.append("tweets")
 sys.path.append("translation")
 
 # Authenticate to Twitter
-api_key = credentials.api_key
-api_key_secret = credentials.api_key_secret
-access_token = credentials.access_token
-access_token_secret = credentials.access_token_secret
+api_key = os.environ["API_KEY"]
+api_key_secret = os.environ["API_KEY_SECRET"]
+access_token = os.environ["ACCESS_TOKEN"]
+access_token_secret = os.environ["ACCESS_TOKEN_SECRET"]
 
 auth = tweepy.OAuthHandler(api_key, api_key_secret)
 auth.set_access_token(access_token, access_token_secret)

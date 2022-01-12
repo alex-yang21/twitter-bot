@@ -2,7 +2,7 @@ from application import api
 from application import logger
 
 from translation.translator import get_translation
-from banned_words import is_profane
+from translation.banned_words import is_profane
 
 keyword = "translate"
 
