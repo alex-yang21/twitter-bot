@@ -11,7 +11,7 @@ Twitter users can tag the bot in reply to a tweet, and the bot will translate th
 ![Screen Shot 2022-01-11 at 2 44 42 AM](https://user-images.githubusercontent.com/57927187/148928594-be2e72ef-1f1b-4d4e-a9ee-ac327f792462.png)
 
 ### User DMs
-Users that the bot follows can direct message the bot tweets, which the bot will translate and quote retweet the original tweet.
+Users that the bot follows can direct message the bot tweets, which the bot will translate and quote retweet the original tweet. The bot will then direct message the translated tweet back to the original sender.
 
 ![Screen Shot 2022-01-11 at 2 46 46 AM](https://user-images.githubusercontent.com/57927187/148928831-aae5a367-570c-44a5-a3d1-10b9257390fb.png)
 
