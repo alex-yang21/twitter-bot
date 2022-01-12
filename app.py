@@ -44,7 +44,7 @@ scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
 scheduler.add_job(func=check_dms, trigger="interval", seconds=300)
 scheduler.start()
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 @application.route("/")
 def index():
