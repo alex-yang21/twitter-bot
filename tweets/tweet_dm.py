@@ -70,7 +70,7 @@ def reply_dms(file):
             logger.info("DM had no associated tweet")
             continue
         tweet_id, url = pair
-        logger.info(f"Replying to tweet with tweet id: {tweet_id} and url: {url}")
+        logger.info(f"Attempting to tweet with tweet id: {tweet_id} and url: {url}")
 
         if dm_id > last_id: # checks if any new DMs
             logger.info("someone dmed me...")
