@@ -42,10 +42,16 @@ def replace_phrases(replaced, phrases):
             replaced = replaced.replace(phrase, translated_phrase)
         elif phrase.upper() in replaced:
             translated_phrase = phrases[phrase]
-            replaced = replaced.replace(phrase.upper(), translated_phrase.upper())
+            if phrases == i_phrases:
+                replaced = replaced.replace(phrase.upper(), translated_phrase)
+            else:
+                replaced = replaced.replace(phrase.upper(), translated_phrase.upper())
         elif phrase.capitalize() in replaced:
             translated_phrase = phrases[phrase]
-            replaced = replaced.replace(phrase.capitalize(), translated_phrase.capitalize())
+            if phrases == i_phrases:
+                replaced = replaced.replace(phrase.capitalize(), translated_phrase)
+            else:
+                replaced = replaced.replace(phrase.capitalize(), translated_phrase.capitalize())
 
     return replaced
 
