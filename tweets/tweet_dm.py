@@ -1,7 +1,7 @@
 from tweet_reply import put_last_tweet
 
-from application import api
-from application import logger
+from app import api
+from app import logger
 
 from translator import get_translation
 from translation.banned_words import is_profane

@@ -2,8 +2,8 @@ import requests
 import json
 import time
 
-from application import api
-from application import logger
+from app import api
+from app import logger
 
 from translator import get_translation
 from dictionary import key_words, two_phrases, three_phrases, i_phrases

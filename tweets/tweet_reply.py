@@ -1,5 +1,5 @@
-from application import api
-from application import logger
+from app import api
+from app import logger
 
 from translation.translator import get_translation
 from translation.banned_words import is_profane
