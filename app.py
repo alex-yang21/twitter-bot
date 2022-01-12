@@ -46,11 +46,11 @@ scheduler.start()
 
 app = Flask(__name__)
 
-@application.route("/")
+@app.route("/")
 def index():
     return "Follow @jarjarbot1!"
 
 atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == "__main__":
-    application.run(port=5000, debug=True)
+    app.run(port=5000, debug=True)
