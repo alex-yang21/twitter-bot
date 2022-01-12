@@ -63,7 +63,8 @@ def reply_dms(file):
     for dm in reversed(dms): # start with oldest dm first
         text = get_tweet_text(dm)
         dm_id = int(dm._json["id"])
-        logger.info(f"Checking dm. dm_id: {dm_id}, tweet text: {text}")
+        sender_id = dm._json["message_create"]["sender_id"]
+        logger.info(f"Checking dm from sender: {sender_id}. dm_id: {dm_id}, tweet text: {text}")
 
         pair = get_tweet_id_url(dm)
         if not pair:
@@ -79,6 +80,7 @@ def reply_dms(file):
             try:
                 logger.info("Finding tweet")
                 tweet = api.get_status(id=tweet_id, tweet_mode="extended")
+                screen_name = tweet.user._json["screen_name"]
                 logger.info(f"Translating tweet: {tweet.full_text}")
                 logger.info("Checking for profanity")
                 if is_profane(tweet.full_text):
@@ -86,8 +88,11 @@ def reply_dms(file):
                     assert 1 == 2 # fail the try block
                 translation = get_translation(tweet.full_text)
                 logger.info(f"Translated tweet: {translation}")
-                logger.info("Replying to tweet")
-                api.update_status(status=translation, attachment_url=url)
+                logger.info("Tweeting translation")
+                translated_tweet = api.update_status(status=translation, attachment_url=url)
+                logger.info(f"Sending translated tweet to original sender: {sender_id}")
+                formatted_url = f"https://twitter.com/{screen_name}/status/{translated_tweet.id}"
+                api.send_direct_message(recipient_id=sender_id, text=formatted_url)
                 flag = True
             except:
                 logger.info("Error in replying or already replied to {dm_id}")

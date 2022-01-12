@@ -104,7 +104,7 @@ pronouns = {
     "him": "hesa",
     "his": "hes",
     "she": "shesa",
-    "her": "shesa",
+    "her": "shes",
     "hers": "shes",
     "we": "wesa",
     "us": "wesa",
