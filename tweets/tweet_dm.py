@@ -62,7 +62,7 @@ def reply_dms(file):
     flag = False
     for dm in reversed(dms): # start with oldest dm first
         text = get_tweet_text(dm)
-        dm_id = int(dm._json["id"])
+        dm_id = int(dm.id)
         sender_id = dm._json["message_create"]["sender_id"]
         logger.info(f"Checking dm from sender: {sender_id}. dm_id: {dm_id}, tweet text: {text}")
 
@@ -92,10 +92,11 @@ def reply_dms(file):
                 translated_tweet = api.update_status(status=translation, attachment_url=url)
                 logger.info(f"Sending translated tweet to original sender: {sender_id}")
                 formatted_url = f"https://twitter.com/{screen_name}/status/{translated_tweet.id}"
-                api.send_direct_message(recipient_id=sender_id, text=formatted_url)
+                new_dm = api.send_direct_message(recipient_id=sender_id, text=formatted_url)
+                dm_id = new_dm.id
                 flag = True
             except:
-                logger.info("Error in replying or already replied to {dm_id}")
+                logger.info(f"Error in replying or already replied to {dm_id}")
 
     if flag:
         put_last_tweet(file, dm_id)

@@ -71,7 +71,7 @@ off_limits = {
     "penis",
     "pussy",
     "vagina",
-    "cum",
+    " cum",
 
     "rape",
     "rapist",
