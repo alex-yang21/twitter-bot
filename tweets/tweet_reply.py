@@ -76,7 +76,7 @@ def respond_to_tweet(file):
                 translated_tweet = None
                 if len(translation) > 280:
                     logger.info("Translation longer than 280 characters")
-                    first, second = translation[:280], translation[280:]
+                    first, second = translation[:250], translation[250:]
                     logger.info(f"Replying with first part: {first}")
                     translated_tweet = api.update_status(status="@" + mention.user.screen_name + " " + first, in_reply_to_status_id=mention.id)
                     logger.info(f"Replying with second part: {second}")

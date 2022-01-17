@@ -46,9 +46,10 @@ def get_last_dm(file):
     f.close()
     return lastId
 
-def following(screen_name):
-    screen_name = [screen_name]
-    relationship = api.lookup_friendships(screen_name=screen_name)[0]
+def following(sender_id):
+    logger.info(f"Checking if we follow user with id: {sender_id}")
+    sender_id = [sender_id]
+    relationship = api.lookup_friendships(user_id=sender_id)[0]
     return relationship.is_following
 
 def reply_dms(file):
@@ -104,26 +105,26 @@ def reply_dms(file):
                 if len(translation) > 280:
                     logger.info("Translation longer than 280 characters, breaking into two tweets")
 
-                    first, second = translation[:280], translation[280:]
+                    first, second = translation[:260], translation[260:]
                     # if we follow the person, we tweet the translation as a quote retweet, if not a reply
-                    if following(screen_name):
+                    if following(sender_id):
                         logger.info(f"Quote tweeting first part: {first}")
                         translated_tweet = api.update_status(status=first, attachment_url=url)
                         logger.info(f"Replying with second part: {second}")
                         api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                     else:
                         logger.info(f"Replying with first part: {first}")
-                        translated_tweet = api.update_status(status=first, in_reply_to_status_id=tweet_id)
+                        translated_tweet = api.update_status(status=first, in_reply_to_status_id=tweet.id)
                         logger.info(f"Replying with second part: {second}")
                         api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                 else:
                     # if we follow the person, we tweet the translation as a quote retweet, if not a reply
-                    if following(screen_name):
+                    if following(sender_id):
                         logger.info("Quote tweeting translation")
                         translated_tweet = api.update_status(status=translation, attachment_url=url)
                     else:
                         logger.info("Replying with translation")
-                        translated_tweet = api.update_status(status=translation, in_reply_to_status_id=tweet_id)
+                        translated_tweet = api.update_status(status=translation, in_reply_to_status_id=tweet.id)
 
                 logger.info(f"Sending translated tweet to original sender: {sender_id}")
                 formatted_url = f"https://twitter.com/{screen_name}/status/{translated_tweet.id}"
