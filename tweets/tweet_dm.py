@@ -99,7 +99,6 @@ def reply_dms(file):
                 # if the translation is longer than 280 characters split into two tweets
                 translation = get_translation(truncated)
                 logger.info(f"Translated tweet: {translation}")
-                logger.info("Tweeting translation")
 
                 translated_tweet = None
                 if len(translation) > 280:
@@ -120,8 +119,10 @@ def reply_dms(file):
                 else:
                     # if we follow the person, we tweet the translation as a quote retweet, if not a reply
                     if following(screen_name):
+                        logger.info("Quote tweeting translation")
                         translated_tweet = api.update_status(status=translation, attachment_url=url)
                     else:
+                        logger.info("Replying with translation")
                         translated_tweet = api.update_status(status=translation, in_reply_to_status_id=tweet_id)
 
                 logger.info(f"Sending translated tweet to original sender: {sender_id}")
