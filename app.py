@@ -40,7 +40,7 @@ def check_dms():
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_replies, trigger="interval", seconds=300)
-scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400)
+#scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400) --> no longer needed
 scheduler.add_job(func=check_dms, trigger="interval", seconds=300)
 scheduler.start()
 

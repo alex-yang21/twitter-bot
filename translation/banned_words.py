@@ -1,3 +1,5 @@
+from app import logger
+
 off_limits = {
     # off limit words
     "nigger",
@@ -108,5 +110,6 @@ def is_profane(text):
     """
     for word in off_limits:
         if word in text:
+            logger.info(f"Found profanity: {word}")
             return True
     return False

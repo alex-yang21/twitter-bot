@@ -1,3 +1,5 @@
+import re
+
 from app import api
 from app import logger
 
@@ -63,13 +65,25 @@ def respond_to_tweet(file):
                 logger.info("Checking for profanity")
 
                 if is_profane(replied_tweet.full_text):
-                    logger.info(f"Found profanity: {word}")
                     assert 1 == 2 # fail the try block
 
-                translation = get_translation(replied_tweet.full_text)
+                # truncate the tweet text to be below 280 character limit if possible
+                truncated = re.sub(r' https://t.co/\w{10}', '', replied_tweet.full_text) # replace annoying url at end
+                truncated = re.sub(' +', ' ', truncated) # replace all unnecessary white space
+                translation = get_translation(truncated)
                 logger.info(f"Translated tweet: {translation}")
-                logger.info("Replying to tweet")
-                api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
+
+                translated_tweet = None
+                if len(translation) > 280:
+                    logger.info("Translation longer than 280 characters")
+                    first, second = translation[:280], translation[280:]
+                    logger.info(f"Replying with first part: {first}")
+                    translated_tweet = api.update_status(status="@" + mention.user.screen_name + " " + first, in_reply_to_status_id=mention.id)
+                    logger.info(f"Replying with second part: {second}")
+                    api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
+                else:
+                    logger.info("Replying to tweet")
+                    api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
             except:
                 logger.info(f"Error in replying or already replied to {mention.id}")
 
