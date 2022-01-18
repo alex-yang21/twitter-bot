@@ -81,7 +81,7 @@ def reply_dms(file):
 
         if dm_id > last_id: # checks if any new DMs
             logger.info("someone dmed me...")
-            logger.info(f"Replying back to {dm_id}")
+            logger.info(f"Replying back to dm with id: {dm_id}")
             tweet = None
             try:
                 logger.info("Finding tweet")
@@ -91,6 +91,7 @@ def reply_dms(file):
                 logger.info("Checking for profanity")
                 if is_profane(tweet.full_text):
                     api.send_direct_message(recipient_id=sender_id, text="Sorry I can't tweet that lol")
+                    put_last_tweet(file, dm_id)
                     assert 1 == 2 # fail the try block
 
                 # truncate the tweet text to be below 280 character limit if possible
@@ -102,32 +103,33 @@ def reply_dms(file):
                 logger.info(f"Translated tweet: {translation}")
 
                 translated_tweet = None
-                if len(translation) > 280:
+                is_following = following(sender_id)
+                if len(translation) > 280 or (not is_following and len(translation) + len(screen_name) + 2 > 280):
                     logger.info("Translation longer than 280 characters, breaking into two tweets")
 
                     first, second = translation[:260], translation[260:]
                     # if we follow the person, we tweet the translation as a quote retweet, if not a reply
-                    if following(sender_id):
+                    if is_following:
                         logger.info(f"Quote tweeting first part: {first}")
                         translated_tweet = api.update_status(status=first, attachment_url=url)
                         logger.info(f"Replying with second part: {second}")
                         api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                     else:
                         logger.info(f"Replying with first part: {first}")
-                        translated_tweet = api.update_status(status=first, in_reply_to_status_id=tweet.id)
+                        translated_tweet = api.update_status(status="@" + screen_name + " " + first, in_reply_to_status_id=tweet.id)
                         logger.info(f"Replying with second part: {second}")
                         api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                 else:
                     # if we follow the person, we tweet the translation as a quote retweet, if not a reply
-                    if following(sender_id):
+                    if is_following:
                         logger.info("Quote tweeting translation")
                         translated_tweet = api.update_status(status=translation, attachment_url=url)
                     else:
                         logger.info("Replying with translation")
-                        translated_tweet = api.update_status(status=translation, in_reply_to_status_id=tweet.id)
+                        translated_tweet = api.update_status(status="@" + screen_name + " " + translation, in_reply_to_status_id=tweet.id)
 
                 logger.info(f"Sending translated tweet to original sender: {sender_id}")
-                formatted_url = f"https://twitter.com/{screen_name}/status/{translated_tweet.id}"
+                formatted_url = f"https://twitter.com/jarjarbot1/status/{translated_tweet.id}"
                 new_dm = api.send_direct_message(recipient_id=sender_id, text=formatted_url)
                 dm_id = new_dm.id
                 flag = True
