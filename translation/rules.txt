@@ -1,7 +1,8 @@
 Gungan translator rules:
   1. Try to use mappings from https://starwars.fandom.com/wiki/Gungan_Basic
-  2. Try not to use old Gungan
-  3. Use our own rules to fill in the holes
+  2. Change a phrase like 'I am going' --> 'My goen'
+  3. Try not to use old Gungan
+  4. Use our own rules to fill in the holes
 
 Our rules:
   1. Follow English grammar, just use 1-1 mappings. This may conflict with some Gungan grammar.

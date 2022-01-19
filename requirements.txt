@@ -22,6 +22,7 @@ pathy==0.6.1
 preshed==3.0.6
 pydantic==1.8.2
 pyparsing==3.0.6
+Pyphen==0.10.0
 pytz==2021.3
 pytz-deprecation-shim==0.1.0.post0
 requests==2.27.1
@@ -31,6 +32,7 @@ smart-open==5.2.1
 spacy==3.2.1
 spacy-legacy==3.0.8
 spacy-loggers==1.0.1
+spacy-syllables==3.0.1
 srsly==2.4.2
 thinc==8.0.13
 tqdm==4.62.3

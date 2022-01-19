@@ -357,6 +357,7 @@ three_phrases = {
     "it is a ": "isa ",
     "into the ": "in tada ", # technically only 2 but needs precedence over "to the"
     "a lot of ": "mui ",
+    "i don't know": "my no know",
 
     # # here because "she is" contains "he is" and so on
     "she is ": "shesa ",
@@ -365,6 +366,7 @@ three_phrases = {
 four_phrases = {
     "she isn't": "shesa not",
     "she isnt": "shesa not",
+    "i do not know": "my now know"
 }
 
 i_phrases = {
