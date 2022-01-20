@@ -83,7 +83,7 @@ def replace_words(replaced, valid_nouns, valid_verbs, valid_gerunds, two_or_less
                 if curr_word == curr_word.upper() and curr_word.lower() not in {"i", "im"}:
                     res += translated_word.upper()
                 elif curr_word == curr_word.capitalize():
-                    if curr_word.lower() == "i" and res and res[-1] == " ": # edge case where the word is "I" and in the middle of sentence
+                    if curr_word.lower() == "i" and len(res) > 2 and res[-1] == " " and res[-2] != ".": # edge case where the word is "I" and in the middle of sentence
                         res += translated_word
                     else:
                         res += translated_word.capitalize()
