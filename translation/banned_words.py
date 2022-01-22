@@ -69,7 +69,6 @@ off_limits = {
     "labia",
     "scrotum",
     "porn",
-    "sexual",
     "penis",
     "pussy",
     "vagina",
@@ -86,6 +85,7 @@ off_limits = {
 
     # religions
     "christians",
+    "christianity",
     "islam",
     "muslim",
     "hindu",

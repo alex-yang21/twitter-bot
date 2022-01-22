@@ -19,4 +19,5 @@ See `tweets` directory for more information.
 
 ### Resources
 Credit to: https://auth0.com/blog/how-to-make-a-twitter-bot-in-python-using-tweepy/
+
 Gungan information from: https://starwars.fandom.com/wiki/Gungan_Basic
