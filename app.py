@@ -39,9 +39,9 @@ def check_dms():
     reply_dms("text_files/dm_id.txt")
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=check_replies, trigger="interval", seconds=300)
+scheduler.add_job(func=check_replies, trigger="interval", seconds=600)
 #scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400) --> no longer needed
-scheduler.add_job(func=check_dms, trigger="interval", seconds=300)
+scheduler.add_job(func=check_dms, trigger="interval", seconds=180)
 scheduler.start()
 
 app = Flask(__name__)

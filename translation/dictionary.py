@@ -1,25 +1,15 @@
 # much of this is drawn from  https://starwars.fandom.com/wiki/Gungan_Basic
 numbers = { # not sure how to handle numbers above 10
     "one": "una",
-    "1": "una",
     "two": "duey",
-    "2": "duey",
     "three": "dee",
-    "3": "dee",
     "four": "foosa",
-    "4": "foosa",
     "five": "fife",
-    "5": "fife",
     "six": "seeks",
-    "6": "seeks",
     "seven": "sevin",
-    "7": "sevin",
     "eight": "ate-a",
-    "8": "ate-a",
     "nine": "ninee",
-    "9": "ninee",
-    "ten": "tenska",
-    "10": "tenska"
+    "ten": "tenska"
 }
 
 common_words = {

@@ -49,7 +49,6 @@ off_limits = {
     "ethnic cleansing",
     "apartheid",
     "death",
-    "dead",
     "kill",
     "casualty",
     "casualties",
