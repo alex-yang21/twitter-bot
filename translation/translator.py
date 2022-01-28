@@ -17,9 +17,11 @@ def get_translation(text):
 
     # 2. Search for noun and verbs that are valid to later modify words
     doc = nlp(replaced)
+    for token in doc:
+        print(token.text, token.tag_)
     valid_nouns = {chunk.root.text for chunk in doc.noun_chunks if chunk.root.tag_ == "NN" and chunk.root.dep_ in ["nsubj", "nsubjpass", "dobj", "pobj"]}
     valid_verbs = {token.text for token in doc if token.tag_ in ["VB", "VBP", "VBZ"]}
-    valid_gerunds = {token.text for token in doc if token.tag_ == "VBG"}
+    valid_gerunds = {token.text for token in doc if token.tag_ in ["VBG", "NN"]}
     two_or_less_syllables = {token.text for token in doc if token._.syllables_count and token._.syllables_count <= 2}
 
     # 3. Use the 'I am going' -> 'My going' rule, the 'going' will change to 'goen' later. We change to 'myalex' to avoid double translation.

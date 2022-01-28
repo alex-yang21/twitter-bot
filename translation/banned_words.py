@@ -49,10 +49,10 @@ off_limits = {
     "ethnic cleansing",
     "apartheid",
     "death",
-    "kill",
     "casualty",
     "casualties",
     "terrorist",
+    "murder",
 
     # sexual
     "anal",

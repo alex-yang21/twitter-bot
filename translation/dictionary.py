@@ -69,7 +69,9 @@ star_wars_words = {
     "ship": "skeebeetle",
     "ships": "skeebeetles",
     "droid": "machineek",
-    "droids": "machineeks"
+    "droids": "machineeks",
+    "gun": "blaster",
+    "guns": "blasters"
 }
 
 # there are a lot of words that could translate to bombad
@@ -109,8 +111,6 @@ gungan_basic = {**numbers, **common_words, **pronouns, **star_wars_words}
 
 # some of the more recognizable words from old gungan, courtesy of: https://starwars.fandom.com/wiki/Old_Gungan
 old_gungan = {
-    "gun": "booma",
-    "guns": "boomas",
     "explosion": "booma",
     "explosions": "boomas",
     "rocket": "bodooka",
