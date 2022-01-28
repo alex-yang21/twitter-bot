@@ -17,8 +17,6 @@ def get_translation(text):
 
     # 2. Search for noun and verbs that are valid to later modify words
     doc = nlp(replaced)
-    for token in doc:
-        print(token.text, token.tag_)
     valid_nouns = {chunk.root.text for chunk in doc.noun_chunks if chunk.root.tag_ == "NN" and chunk.root.dep_ in ["nsubj", "nsubjpass", "dobj", "pobj"]}
     valid_verbs = {token.text for token in doc if token.tag_ in ["VB", "VBP", "VBZ"]}
     valid_gerunds = {token.text for token in doc if token.tag_ in ["VBG", "NN"]}

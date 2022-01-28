@@ -26,22 +26,23 @@ logger.setLevel(logging.INFO)
 
 from tweet_reply import respond_to_tweet
 from tweet_dm import reply_dms
-from tweet_quote import tweet_daily_quote
+from tweet_jarjar import reply_jarjar
 
 # background scheduling of jobs
 def check_replies():
     respond_to_tweet("text_files/tweet_id.txt")
 
-def daily_quote():
-    tweet_daily_quote()
-
 def check_dms():
     reply_dms("text_files/dm_id.txt")
 
+def check_jarjar():
+    reply_jarjar("text_files/tweet_jarjar.txt")
+
+
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_replies, trigger="interval", seconds=600)
-#scheduler.add_job(func=daily_quote, trigger="interval", seconds=86400) --> no longer needed
 scheduler.add_job(func=check_dms, trigger="interval", seconds=180)
+scheduler.add_job(func=check_jarjar, trigger="interval", seconds=1800)
 scheduler.start()
 
 app = Flask(__name__)

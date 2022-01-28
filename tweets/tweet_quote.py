@@ -1,3 +1,5 @@
+# no longer used
+
 import requests
 import json
 import time

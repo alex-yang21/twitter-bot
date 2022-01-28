@@ -157,8 +157,6 @@ our_dict = {
     "love": "luv",
     "loves": "luvs",
     "peace": "peles",
-    "invitation": "invitateon",
-    "invitations": "invitateons",
     "these": "dese",
     "was": "wasa",
     "were": "wasa",
@@ -171,12 +169,8 @@ our_dict = {
     "thinkin": "tinken",
     "day": "dayo",
     "cheap": "cheapo",
-    "plane": "plano",
-    "planes": "planos",
-    "car": "caro",
-    "cars": "caros",
-    "train": "traino",
-    "trains": "trainos",
+    "done": "donezo",
+    "watch": "watchey",
 
     # names
     "alex": "alexsa",
