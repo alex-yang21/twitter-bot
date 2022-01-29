@@ -22,7 +22,7 @@ def reply_jarjar(file, query="jar jar binks -filter:retweets"):
     new_id = 0
     for tweet in reversed(query_tweets):
         new_id = tweet.id
-        if not tweet.in_reply_to_status_id and not tweet._json['is_quote_status']: # tweet is not a reply or quote tweet
+        if tweet.user.screen_name != "jarjarbot1" and not tweet.in_reply_to_status_id and not tweet._json['is_quote_status']: # tweet is not our reply and is not a tweet reply or quote tweet
             logger.info(f"Translating tweet with id: {tweet.id}")
 
             try:
