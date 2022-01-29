@@ -20,7 +20,7 @@ def get_translation(text):
     valid_nouns = {chunk.root.text for chunk in doc.noun_chunks if chunk.root.tag_ == "NN" and chunk.root.dep_ in ["nsubj", "nsubjpass", "dobj", "pobj"]}
     valid_verbs = {token.text for token in doc if token.tag_ in ["VB", "VBP", "VBZ"]}
     valid_gerunds = {token.text for token in doc if token.tag_ in ["VBG", "NN"]}
-    two_or_less_syllables = {token.text for token in doc if token._.syllables_count and token._.syllables_count <= 2}
+    one_syllables = {token.text for token in doc if token._.syllables_count and token._.syllables_count < 2}
 
     # 3. Use the 'I am going' -> 'My going' rule, the 'going' will change to 'goen' later. We change to 'myalex' to avoid double translation.
     replaced = grammar_rule(replaced)
@@ -32,7 +32,7 @@ def get_translation(text):
     replaced = replace_phrases(replaced, i_phrases)
 
     # 5. search the text for any key words and replace
-    replaced = replace_words(replaced, valid_nouns, valid_verbs, valid_gerunds, two_or_less_syllables)
+    replaced = replace_words(replaced, valid_nouns, valid_verbs, valid_gerunds, one_syllables)
 
     # 6. Replace the 'myalex' with 'my'
     replaced = replaced.replace("myalex", "my")
@@ -67,7 +67,7 @@ def replace_phrases(replaced, phrases):
 
     return replaced
 
-def replace_words(replaced, valid_nouns, valid_verbs, valid_gerunds, two_or_less_syllables):
+def replace_words(replaced, valid_nouns, valid_verbs, valid_gerunds, one_syllables):
     """
     Helper function that replaces words with their relevant translations.
     """
@@ -92,13 +92,13 @@ def replace_words(replaced, valid_nouns, valid_verbs, valid_gerunds, two_or_less
             else:
                 # use other rules to spice up the non Gungan words
                 if curr_word:
-                    res += spice_up(curr_word, valid_nouns, valid_verbs, valid_gerunds, two_or_less_syllables)
+                    res += spice_up(curr_word, valid_nouns, valid_verbs, valid_gerunds, one_syllables)
             if i != len(replaced)-1:
                 res += ch
             curr_word = ""
     return res
 
-def spice_up(word, valid_nouns, valid_verbs, valid_gerunds, two_or_less_syllables):
+def spice_up(word, valid_nouns, valid_verbs, valid_gerunds, one_syllables):
     """
     Add some gungan type slang to the word.
     """
@@ -114,12 +114,12 @@ def spice_up(word, valid_nouns, valid_verbs, valid_gerunds, two_or_less_syllable
             word = word[:-3] + "EON"
         else:
             word = word[:-3] + "eon"
-    elif word[-1].lower() == "e" and word in valid_verbs and len(word) > 2 and word[-2].lower() not in "aeiouy" and word in two_or_less_syllables:
+    elif word[-1].lower() == "e" and word in valid_verbs and len(word) > 2 and word[-2].lower() not in "aeiouy" and word in one_syllables:
         if all_caps:
             word += "N"
         else:
             word += "n"
-    elif word[-1].upper() in good_consonants and (word in valid_verbs or word in valid_nouns) and len(word) > 2 and word[-2].lower() not in "aeiou" and word in two_or_less_syllables:
+    elif word[-1].upper() in good_consonants and (word in valid_verbs or word in valid_nouns) and len(word) > 2 and word[-2].lower() not in "aeiou" and word in one_syllables:
         if all_caps:
             word += "EN"
         else:
