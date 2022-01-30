@@ -191,6 +191,7 @@ our_dict = {
     "ass": "assa",
 
     # social media slang
+    "twitter": "tweeter",
     "tweet": "tweeten",
     "rt": "retweeten",
     "gg": "good gamen",
@@ -211,6 +212,8 @@ our_dict = {
     "ion": "mesa no",
     "ain't": "isa not",
     "aint": "isa not",
+    "bro": "palo",
+    "bros": "palos",
 
     # contractions
     "he's": "hesa",

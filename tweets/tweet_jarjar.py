@@ -7,6 +7,21 @@ from translation.translator import get_translation
 from translation.banned_words import is_profane
 from tweets.tweet_reply import get_last_tweet, put_last_tweet
 
+bot_accounts = {
+    "jarjarbot1",
+    "starwars_facts",
+    "Yoda_Bot",
+    "controverSW",
+    "SWTheoriesBot",
+    "SWSCRIPTBOT",
+    "whyshipreylo",
+    "StarClickBait",
+    "TalkLikeJarJar",
+    "StarWarsInforms",
+    "MachineBot",
+    "swgaybot"
+}
+
 def reply_jarjar(file, query="jar jar binks -filter:retweets"):
     """
     Automatically translates tweets that contain the query 'jar jar binks'.
@@ -22,7 +37,7 @@ def reply_jarjar(file, query="jar jar binks -filter:retweets"):
     new_id = 0
     for tweet in reversed(query_tweets):
         new_id = tweet.id
-        if tweet.user.screen_name != "jarjarbot1" and not tweet.in_reply_to_status_id and not tweet._json['is_quote_status']: # tweet is not our reply and is not a tweet reply or quote tweet
+        if tweet.user.screen_name not in bot_accounts and not tweet.in_reply_to_status_id and not tweet._json['is_quote_status']: # tweet is not from a bot account and is not a tweet reply or quote tweet
             logger.info(f"Translating tweet with id: {tweet.id}")
 
             try:
