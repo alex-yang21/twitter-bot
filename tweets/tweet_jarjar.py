@@ -19,7 +19,11 @@ bot_accounts = {
     "TalkLikeJarJar",
     "StarWarsInforms",
     "MachineBot",
-    "swgaybot"
+    "swgaybot",
+    "swkinkbot",
+    "Cr0ss0verB0t",
+    "sw_ebooks",
+    "jarjarsmutbot"
 }
 
 def reply_jarjar(file, query="jar jar binks -filter:retweets"):
@@ -27,7 +31,7 @@ def reply_jarjar(file, query="jar jar binks -filter:retweets"):
     Automatically translates tweets that contain the query 'jar jar binks'.
     """
     last_id = get_last_tweet(file)
-    query_tweets = api.search_tweets(q=query, lang="en", result_type="mixed", count=5, tweet_mode="extended", since_id=last_id)
+    query_tweets = api.search_tweets(q=query, lang="en", result_type="popular", count=5, tweet_mode="extended", since_id=last_id)
 
     if len(query_tweets) == 0: # no new tweets to respond to
         logger.info("no tweets with query found")

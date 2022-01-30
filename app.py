@@ -42,7 +42,7 @@ def check_jarjar():
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_replies, trigger="interval", seconds=600)
 scheduler.add_job(func=check_dms, trigger="interval", seconds=180)
-scheduler.add_job(func=check_jarjar, trigger="interval", seconds=3600)
+scheduler.add_job(func=check_jarjar, trigger="interval", seconds=600)
 scheduler.start()
 
 app = Flask(__name__)
