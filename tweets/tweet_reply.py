@@ -65,6 +65,9 @@ def respond_to_tweet(file):
                 logger.info("Checking for profanity")
 
                 if is_profane(replied_tweet.full_text):
+                    logger.info("Found profanity")
+                    api.send_direct_message(recipient_id=mention.user.id, text="Sorry I can't tweet the tweet you tagged me in :(")
+                    put_last_tweet(file, new_id)
                     assert 1 == 2 # fail the try block
 
                 # truncate the tweet text to be below 280 character limit if possible

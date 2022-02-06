@@ -86,7 +86,7 @@ def reply_dms(file):
             try:
                 logger.info("Finding tweet")
                 tweet = api.get_status(id=tweet_id, tweet_mode="extended")
-                screen_name = tweet.user._json["screen_name"]
+                screen_name = tweet.user.screen_name
                 logger.info(f"Translating tweet: {tweet.full_text}")
                 logger.info("Checking for profanity")
                 if is_profane(tweet.full_text):
