@@ -39,6 +39,7 @@ def reply_jarjar(file, query="jar jar binks -filter:retweets"):
 
     logger.info(f"someone said '{query}'...")
     new_id = 0
+    found = False
     for tweet in reversed(query_tweets):
         new_id = tweet.id
         if tweet.user.screen_name not in bot_accounts and not tweet.in_reply_to_status_id and not tweet._json['is_quote_status']: # tweet is not from a bot account and is not a tweet reply or quote tweet
@@ -62,7 +63,9 @@ def reply_jarjar(file, query="jar jar binks -filter:retweets"):
                 else:
                     logger.info("Replying to tweet with translation")
                     api.update_status(status="@" + tweet.user.screen_name + " " + translation, in_reply_to_status_id=tweet.id)
+                    found = True
             except:
                 logger.info(f"Error in replying or already replied to {tweet.id}")
 
-    put_last_tweet(file, new_id)
+    if found:
+        put_last_tweet(file, new_id)

@@ -33,6 +33,8 @@ common_words = {
     "happy": "smilin",
     "speak": "spake",
     "say": "spake",
+    "says": "spake",
+    "said": "spake",
     "friend": "palo",
     "friends": "palos",
     "pal": "palo",
