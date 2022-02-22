@@ -62,7 +62,7 @@ def reply_dms(file):
         logger.info("No dms yet")
         return
 
-    dms = api.get_direct_messages(count=20) # don't anticipate doing more than 20 dms per day
+    dms = api.get_direct_messages(count=10) # don't anticipate doing more than 10 dms per cycle
 
     dm_id, tweet_id = 0, 0
     flag = False
@@ -87,10 +87,16 @@ def reply_dms(file):
                 logger.info("Finding tweet")
                 tweet = api.get_status(id=tweet_id, tweet_mode="extended")
                 screen_name = tweet.user.screen_name
+                if screen_name == "jarjarbot1":
+                    logger.info("Do not translate our own tweets!")
+                    api.send_direct_message(recipient_id=sender_id, text="Sorry I can't translate my own tweets!")
+                    put_last_tweet(file, dm_id)
+                    assert 1 == 2 # fail the try block
+
                 logger.info(f"Translating tweet: {tweet.full_text}")
                 logger.info("Checking for profanity")
                 if is_profane(tweet.full_text):
-                    api.send_direct_message(recipient_id=sender_id, text="Sorry I can't tweet that lol")
+                    api.send_direct_message(recipient_id=sender_id, text="Sorry I can't tweet that..")
                     put_last_tweet(file, dm_id)
                     assert 1 == 2 # fail the try block
 

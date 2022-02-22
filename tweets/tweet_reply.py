@@ -61,6 +61,9 @@ def respond_to_tweet(file):
             try:
                 logger.info("Finding parent tweet")
                 replied_tweet = api.get_status(id=mention.in_reply_to_status_id, tweet_mode="extended") # grab the tweet that this mention is replying to
+                if replied_tweet.user.screen_name == "jarjarbot1":
+                    logger.info("Do not translate our own tweets!") # this can prevent infinite loop
+                    assert 1 == 2 # fail try block
                 logger.info(f"Translating tweet: {replied_tweet.full_text}")
                 logger.info("Checking for profanity")
 
