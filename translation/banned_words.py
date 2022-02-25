@@ -101,14 +101,19 @@ off_limits = {
     "alzheimers",
     "alzheimer's",
     "cancer",
+
+    # Russia Ukraine conflict related
+    "russia",
+    "ukraine"
 }
 
 def is_profane(text):
     """
     Helper function that checks if a text contains profanity.
     """
+    lower_case = text.lower()
     for word in off_limits:
-        if word in text:
-            logger.info(f"Found profanity: {word}")
+        if word in lower_case:
+            logger.info(f"Found banned word: {word}")
             return True
     return False
