@@ -23,7 +23,8 @@ bot_accounts = {
     "swkinkbot",
     "Cr0ss0verB0t",
     "sw_ebooks",
-    "jarjarsmutbot"
+    "jarjarsmutbot",
+    "Candidate__Bot"
 }
 
 def reply_jarjar(file, query="jar jar binks -filter:retweets"):

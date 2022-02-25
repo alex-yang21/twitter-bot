@@ -13,6 +13,7 @@ def get_translation(text):
     """
     # 1. twitter apostrophes are weird, replace with our apostrophes
     replaced = text.replace("â€™", "'")
+    replaced = text.replace("&amp;", "&")
     replaced = text.replace("’", "'")
 
     # 2. Search for noun and verbs that are valid to later modify words
