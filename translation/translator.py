@@ -158,3 +158,18 @@ def grammar_rule(replaced):
     replaced = re.sub(exp9, exp10, replaced)
 
     return replaced
+
+def get_partitions(text):
+    """
+    Partition the tweets text into two separate tweets if the tweet is longer than 280 characters.
+    We want to partition such that the split is white space.
+    """
+    assert len(text) > 280
+
+    end = text[250:]
+
+    if " " in end:
+        split = end.index(" ") + 250 # index of the white space
+        return text[:split], text[split+1:]
+    else:
+        return text[:260], text[260:]

@@ -3,7 +3,7 @@ import re
 from app import api
 from app import logger
 
-from translation.translator import get_translation
+from translation.translator import get_translation, get_partitions
 from translation.banned_words import is_profane
 
 keyword = "translate"
@@ -82,7 +82,7 @@ def respond_to_tweet(file):
                 translated_tweet = None
                 if len(translation) > 280:
                     logger.info("Translation longer than 280 characters")
-                    first, second = translation[:250], translation[250:]
+                    first, second = get_partitions(translation)
                     logger.info(f"Replying with first part: {first}")
                     translated_tweet = api.update_status(status="@" + mention.user.screen_name + " " + first, in_reply_to_status_id=mention.id)
                     logger.info(f"Replying with second part: {second}")

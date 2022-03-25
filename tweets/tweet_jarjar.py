@@ -3,7 +3,7 @@ import re
 from app import api
 from app import logger
 
-from translation.translator import get_translation
+from translation.translator import get_translation, get_partitions
 from translation.banned_words import is_profane
 from tweets.tweet_reply import get_last_tweet, put_last_tweet
 

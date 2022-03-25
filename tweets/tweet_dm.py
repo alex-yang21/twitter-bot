@@ -4,7 +4,7 @@ from tweet_reply import put_last_tweet
 from app import api
 from app import logger
 
-from translator import get_translation
+from translator import get_translation, get_partitions
 from translation.banned_words import is_profane
 
 def get_tweet_text(dm):
@@ -113,7 +113,7 @@ def reply_dms(file):
                 if len(translation) > 280 or (not is_following and len(translation) + len(screen_name) + 2 > 280):
                     logger.info("Translation longer than 280 characters, breaking into two tweets")
 
-                    first, second = translation[:260], translation[260:]
+                    first, second = get_partitions(translation)
                     # if we follow the person, we tweet the translation as a quote retweet, if not a reply
                     if is_following:
                         logger.info(f"Quote tweeting first part: {first}")
