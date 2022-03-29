@@ -71,7 +71,6 @@ off_limits = {
     "penis",
     "pussy",
     "vagina",
-    " cum",
 
     "rape",
     "rapist",
@@ -104,7 +103,8 @@ off_limits = {
 
     # Russia Ukraine conflict related
     "russia",
-    "ukraine"
+    "ukraine",
+    "putin",
 }
 
 def is_profane(text):

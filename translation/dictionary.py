@@ -78,7 +78,7 @@ star_wars_words = {
 
 # there are a lot of words that could translate to bombad
 bombad_words = [
-    "great", "strong", "awesome", "amazing", "superb", "admirable", "exceptional",
+    "good", "big", "great", "strong", "awesome", "amazing", "superb", "admirable", "exceptional",
     "remarkable", "excellent", "glorious", "tremendous", "superior", "immense", "heroic",
     "oustanding", "fantastic", "terrific", "marvelous"
 ]
@@ -128,6 +128,7 @@ old_gungan = {
     "eat": "tongue-grabben",
     "eats": "tongue-grabben",
     "eating": "tongue-grabben",
+    "eatin": "tongue-grabben",
     "high": "tup",
     "up": "tup",
     "down": "neb"
@@ -355,7 +356,7 @@ three_phrases = {
 four_phrases = {
     "she isn't": "shesa not",
     "she isnt": "shesa not",
-    "i do not know": "my now know"
+    "i do not know": "my no know"
 }
 
 i_phrases = {

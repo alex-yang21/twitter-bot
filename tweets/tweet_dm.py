@@ -7,6 +7,8 @@ from app import logger
 from translator import get_translation, get_partitions
 from translation.banned_words import is_profane
 
+alex_id = 2680442773 # we now only let DMs be full tweets if I send them, no longer just if the account is following
+
 def get_tweet_text(dm):
     """
     Gets tweet text from a direct message.
@@ -109,13 +111,14 @@ def reply_dms(file):
                 logger.info(f"Translated tweet: {translation}")
 
                 translated_tweet = None
-                is_following = following(sender_id)
-                if len(translation) > 280 or (not is_following and len(translation) + len(screen_name) + 2 > 280):
+                # is_following = following(sender_id) -- deprecated
+                is_alex = sender_id == alex_id
+                if len(translation) > 280 or (not is_alex and len(translation) + len(screen_name) + 2 > 280):
                     logger.info("Translation longer than 280 characters, breaking into two tweets")
 
                     first, second = get_partitions(translation)
-                    # if we follow the person, we tweet the translation as a quote retweet, if not a reply
-                    if is_following:
+                    # if the sender is me, we tweet the translation as a quote retweet, if not a reply
+                    if is_alex:
                         logger.info(f"Quote tweeting first part: {first}")
                         translated_tweet = api.update_status(status=first, attachment_url=url)
                         logger.info(f"Replying with second part: {second}")
@@ -126,8 +129,8 @@ def reply_dms(file):
                         logger.info(f"Replying with second part: {second}")
                         api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                 else:
-                    # if we follow the person, we tweet the translation as a quote retweet, if not a reply
-                    if is_following:
+                    # if the sender is me, we tweet the translation as a quote retweet, if not a reply
+                    if is_alex:
                         logger.info("Quote tweeting translation")
                         translated_tweet = api.update_status(status=translation, attachment_url=url)
                     else:
