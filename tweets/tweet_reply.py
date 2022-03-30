@@ -38,22 +38,31 @@ def put_last_tweet(file, Id):
     f.close()
     logger.info("Updated the file with the latest tweet id")
 
-def recursion_check(text):
+def recursion_check(screen_name, text):
     """
-    There is small edge case where another user replies to the original user tweet '@jarjarbot1 translate'
+    We want to prevent recursive translation calls.
+
+    One case is when a user attempts to translate a tweet from @jarjarbot1 and spams "translate".
+
+    There is another small edge case where another user replies to the original user tweet '@jarjarbot1 translate'
     with the word 'translate' in their reply. Ex: "translate deez nuts".
 
-    To prevent this, we do a simple check to see if the tweet text is purely the word 'translate' once all mentions are removed.
+    To prevent these, we check that the tweet author is not @jarjarbot1, and check to see if the tweet text is purely the word 'translate' once all mentions are removed.
     This is not exhaustive but should handle most cases.
 
     Returns TRUE if the tweet we are translating is a translate request itself, in which case we do not translate that tweet.
     """
+    # check if we are translating our own tweet
+    if screen_name == "jarjarbot1":
+        return True
+
+    # check if the tweet we are translating is a translation request
     text_arr = text.split()
     words = []
     for word in text_arr:
         if word[0] != '@':
             words.append(word)
-    return words == ['translate']
+    return words == ["translate"]
 
 def respond_to_tweet(file):
     """
@@ -72,11 +81,6 @@ def respond_to_tweet(file):
     for mention in reversed(mentions):
         new_id = mention.id
 
-        # check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
-        if recursion_check(mention.text.lower()):
-            logger.info(f"Tweet is a translation request. Do not translate.")
-            continue
-
         if keyword in mention.text.lower(): # check for chosen keyword above
             logger.info(f"Responding back to {mention.id}")
             replied_tweet = None
@@ -84,9 +88,13 @@ def respond_to_tweet(file):
             try:
                 logger.info("Finding parent tweet")
                 replied_tweet = api.get_status(id=mention.in_reply_to_status_id, tweet_mode="extended") # grab the tweet that this mention is replying to
-                if replied_tweet.user.screen_name == "jarjarbot1":
-                    logger.info("Do not translate our own tweets!") # this can prevent infinite loop
+
+                # check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
+                # or if the tweet we are trying to translate is from @jarjarbot1
+                if recursion_check(replied_tweet.user.screen_name, replied_tweet.text.lower()):
+                    logger.info(f"Tweet is recursive. Do not translate.")
                     assert 1 == 2 # fail try block
+
                 logger.info(f"Translating tweet: {replied_tweet.full_text}")
                 logger.info("Checking for profanity")
 
