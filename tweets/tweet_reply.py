@@ -38,6 +38,23 @@ def put_last_tweet(file, Id):
     f.close()
     logger.info("Updated the file with the latest tweet Id")
 
+def recursion_check(text):
+    """
+    There is small edge case where another user replies to the original user tweet '@jarjarbot1 translate'
+    with the word 'translate' in their reply. Ex: "translate deez nuts".
+
+    To prevent this, we do a simple check to see if the tweet text is purely the word 'translate' once all mentions are removed.
+    This is not exhaustive but should handle most cases.
+
+    Returns TRUE if the tweet we are translating is a translate request itself, in which case we do not translate that tweet.
+    """
+    text_arr = text.split()
+    words = []
+    for word in text_arr:
+        if word[0] != '@':
+            words.append(word)
+    return words == ['translate']
+
 def respond_to_tweet(file):
     """
     Checks for mentioned tweets to respond to with translations.
@@ -54,7 +71,7 @@ def respond_to_tweet(file):
     new_id = 0
     for mention in reversed(mentions):
         new_id = mention.id
-        if keyword in mention.text.lower(): # chosen keyword above
+        if keyword in mention.text.lower() and not recursion_check(mention.text.lower()): # chosen keyword above, but check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
             logger.info(f"Responding back to {mention.id}")
             replied_tweet = None
 
