@@ -36,7 +36,7 @@ def put_last_tweet(file, Id):
     f = open(file, "w")
     f.write(str(Id))
     f.close()
-    logger.info("Updated the file with the latest tweet Id")
+    logger.info("Updated the file with the latest tweet id")
 
 def recursion_check(text):
     """
@@ -71,7 +71,13 @@ def respond_to_tweet(file):
     new_id = 0
     for mention in reversed(mentions):
         new_id = mention.id
-        if keyword in mention.text.lower() and not recursion_check(mention.text.lower()): # chosen keyword above, but check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
+
+        # check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
+        if recursion_check(mention.text.lower()):
+            logger.info(f"Tweet is a translation request. Do not translate.")
+            continue
+
+        if keyword in mention.text.lower(): # check for chosen keyword above
             logger.info(f"Responding back to {mention.id}")
             replied_tweet = None
 
