@@ -41,6 +41,8 @@ common_words = {
     "pals": "palos",
     "homie": "palo",
     "homies": "palos",
+    "bud": "palo",
+    "buds": "palos",
     "buddy": "palo",
     "buddies": "palos",
     "here": "hair",

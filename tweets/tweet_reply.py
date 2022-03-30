@@ -91,7 +91,7 @@ def respond_to_tweet(file):
 
                 # check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
                 # or if the tweet we are trying to translate is from @jarjarbot1
-                if recursion_check(replied_tweet.user.screen_name, replied_tweet.text.lower()):
+                if recursion_check(replied_tweet.user.screen_name, replied_tweet.full_text.lower()):
                     logger.info(f"Tweet is recursive. Do not translate.")
                     assert 1 == 2 # fail try block
 
