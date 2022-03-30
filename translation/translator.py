@@ -15,6 +15,7 @@ def get_translation(text):
     replaced = text.replace("â€™", "'")
     replaced = replaced.replace("&amp;", "&")
     replaced = replaced.replace("’", "'")
+    replaced = replaced.replace("&gt;", ">")
 
     # 2. Search for noun and verbs that are valid to later modify words
     doc = nlp(replaced)
