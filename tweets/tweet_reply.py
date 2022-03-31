@@ -113,16 +113,16 @@ def respond_to_tweet(file):
                 logger.info(f"Translated tweet: {translation}")
 
                 translated_tweet = None
-                if len(translation) > 280:
+                if len(translation) > 280 - len(mention.user.screen_name) - 2:
                     logger.info("Translation longer than 280 characters")
                     first, second = get_partitions(translation)
                     logger.info(f"Replying with first part: {first}")
-                    translated_tweet = api.update_status(status=first, in_reply_to_status_id=mention.id)
+                    translated_tweet = api.update_status(status="@" + mention.user.screen_name + " " + first, in_reply_to_status_id=mention.id)
                     logger.info(f"Replying with second part: {second}")
                     api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                 else:
                     logger.info("Replying to tweet")
-                    api.update_status(status=translation, in_reply_to_status_id=mention.id)
+                    api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
             except:
                 logger.info(f"Error in replying or already replied to {mention.id}")
 
