@@ -7,7 +7,7 @@ from app import logger
 from translator import get_translation, get_partitions
 from translation.banned_words import is_profane
 
-alex_id = 2680442773 # we now only let DMs be full tweets if I send them, no longer just if the account is following
+alex_id = "2680442773" # we now only let DMs be full tweets if I send them, no longer just if the account is following
 
 def get_tweet_text(dm):
     """
