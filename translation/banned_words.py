@@ -55,7 +55,7 @@ off_limits = {
     "murder",
 
     # sexual
-    "anal",
+    " anal ",
     "anus",
     "blowjob",
     "blow job",
@@ -71,9 +71,10 @@ off_limits = {
     "penis",
     "pussy",
     "vagina",
+    " cum ",
 
-    "rape",
-    "rapist",
+    " rape ",
+    " rapist ",
     "molest",
     "incest",
     "beastiality",
@@ -87,7 +88,7 @@ off_limits = {
     "islam",
     "muslim",
     "hindu",
-    "jew ",
+    " jew ",
     "jewish",
     "buddhism",
     "buddhist",
