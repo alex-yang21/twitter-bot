@@ -48,7 +48,6 @@ off_limits = {
     "9/11",
     "ethnic cleansing",
     "apartheid",
-    "death",
     "casualty",
     "casualties",
     "terrorist",
