@@ -100,7 +100,6 @@ def respond_to_tweet(file):
 
                 if is_profane(replied_tweet.full_text):
                     logger.info("Found profanity")
-                    api.send_direct_message(recipient_id=mention.user.id, text="Sorry I can't tweet the tweet you tagged me in :(")
                     # logger.info("Replying to tweet saying I can't translate")
                     # api.update_status(status="@" + mention.user.screen_name + " Sorry I can't translate this :(", in_reply_to_status_id=mention.id)
                     put_last_tweet(file, new_id)
@@ -124,6 +123,7 @@ def respond_to_tweet(file):
                     logger.info("Replying to tweet")
                     api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
             except:
+                api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry for some reason I can't translate the tweet you tagged me in :(")
                 logger.info(f"Error in replying or already replied to {mention.id}")
 
     put_last_tweet(file, new_id)
