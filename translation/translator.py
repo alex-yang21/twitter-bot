@@ -165,8 +165,6 @@ def get_partitions(text):
     Partition the tweets text into two separate tweets if the tweet is longer than 280 characters.
     We want to partition such that the split is white space.
     """
-    assert len(text) > 280
-
     end = text[250:]
 
     if " " in end:

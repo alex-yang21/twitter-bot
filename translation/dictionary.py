@@ -170,6 +170,7 @@ our_dict = {
     "without": "witout",
     "something": "sometin",
     "think": "tink",
+    "thinks": "tinks",
     "thinking": "tinken",
     "thinkin": "tinken",
     "day": "dayo",
