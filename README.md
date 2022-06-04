@@ -1,6 +1,6 @@
 # Gungan Translator Twitter Bot with [Tweepy](https://docs.tweepy.org/en/stable/api.html)
 
-### https://twitter.com/jarjarbot1 (parody)
+### Follow us on Twitter [@jarjarbot1](https://twitter.com/jarjarbot1)! Support us on [Ko-fi](https://ko-fi.com/jarjarbot1)!
 
 ### Translation
 Custom translator is built and explained in the `translation` directory. Translation is typically a 1-1 mapping but also uses the [`SpaCy`](https://spacy.io/usage/linguistic-features) NLP package for noun/verb detection and syllable counting, which is useful for other aspects of translation.
