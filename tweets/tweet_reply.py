@@ -88,14 +88,14 @@ def respond_to_tweet(file):
             try:
                 logger.info("Finding parent tweet")
                 replied_tweet = api.get_status(id=mention.in_reply_to_status_id, tweet_mode="extended") # grab the tweet that this mention is replying to
-
+                logger.info(f"Translating tweet: {replied_tweet.full_text}")
+                
                 # check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
                 # or if the tweet we are trying to translate is from @jarjarbot1
                 if recursion_check(replied_tweet.user.screen_name, replied_tweet.full_text.lower()):
                     logger.info(f"Tweet is recursive. Do not translate.")
                     assert 1 == 2 # fail try block
 
-                logger.info(f"Translating tweet: {replied_tweet.full_text}")
                 logger.info("Checking for profanity")
 
                 if is_profane(replied_tweet.full_text):
