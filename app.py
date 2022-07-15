@@ -11,10 +11,10 @@ sys.path.append("translation")
 sys.path.append("templates")
 
 # Authenticate to Twitter
-api_key = os.environ["API_KEY"]
-api_key_secret = os.environ["API_KEY_SECRET"]
-access_token = os.environ["ACCESS_TOKEN"]
-access_token_secret = os.environ["ACCESS_TOKEN_SECRET"]
+api_key = "" # os.environ["API_KEY"]
+api_key_secret = "" # os.environ["API_KEY_SECRET"]
+access_token = "" # os.environ["ACCESS_TOKEN"]
+access_token_secret = "" # os.environ["ACCESS_TOKEN_SECRET"]
 
 auth = tweepy.OAuthHandler(api_key, api_key_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -54,7 +54,7 @@ def index():
     if request.method == "POST":
         input = request.form["input_text"]
         translated = get_translation(input)
-        output = f"Translation: {translated}"
+        output = f"Translation: '{translated}'"
     return render_template("index.html", output=output)
 
 atexit.register(lambda: scheduler.shutdown())

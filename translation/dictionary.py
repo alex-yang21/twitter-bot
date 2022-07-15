@@ -96,6 +96,7 @@ pronouns = {
     "you": "yousa",
     "your": "yous",
     "yours": "yous",
+    "yourself": "youself",
     "he": "hesa",
     "him": "hesa",
     "his": "hes",
