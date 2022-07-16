@@ -82,14 +82,14 @@ def respond_to_tweet(file):
         new_id = mention.id
 
         if keyword in mention.text.lower(): # check for chosen keyword above
-            logger.info(f"Responding back to {mention.id}")
+            logger.info(f"Responding back to {mention.id}. Tweet starts with {mention.text[:10]}")
             replied_tweet = None
 
             try:
                 logger.info("Finding parent tweet")
                 replied_tweet = api.get_status(id=mention.in_reply_to_status_id, tweet_mode="extended") # grab the tweet that this mention is replying to
                 logger.info(f"Translating tweet: {replied_tweet.full_text}")
-                
+
                 # check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
                 # or if the tweet we are trying to translate is from @jarjarbot1
                 if recursion_check(replied_tweet.user.screen_name, replied_tweet.full_text.lower()):
@@ -122,8 +122,10 @@ def respond_to_tweet(file):
                 else:
                     logger.info("Replying to tweet")
                     api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
+                put_last_tweet(file, new_id) # we put the update in the try and except block
             except:
+                put_last_tweet(file, new_id) # the line below is failing a lot so we do not end up updating the file
                 api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry for some reason I can't translate the tweet you tagged me in :(")
                 logger.info(f"Error in replying or already replied to {mention.id}")
 
-    put_last_tweet(file, new_id)
+    # put_last_tweet(file, new_id)
