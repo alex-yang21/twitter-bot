@@ -142,11 +142,11 @@ def reply_dms(file):
                 new_dm = api.send_direct_message(recipient_id=sender_id, text=formatted_url)
                 dm_id = new_dm.id
                 flag = True
+                put_last_tweet(file, dm_id)
             except:
-                api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry account is currently suspended and cannot tweet :(")
+                put_last_tweet(file, dm_id)
+                api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry account is currently 'limited' by Twitter and cannot tweet :(. We will be back around 4 AM (GMT) on July 18!")
                 logger.info(f"Error in replying or already replied to {dm_id}")
 
-    if flag:
-        put_last_tweet(file, dm_id)
-    else:
-        logger.info("No new dms found")
+    if not flag:
+        logger.info("No new dms found or failure occured")
