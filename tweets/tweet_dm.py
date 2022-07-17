@@ -143,7 +143,7 @@ def reply_dms(file):
                 dm_id = new_dm.id
                 flag = True
             except:
-                api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry for some reason I can't translate that :(")
+                api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry account is currently suspended and cannot tweet :(")
                 logger.info(f"Error in replying or already replied to {dm_id}")
 
     if flag:

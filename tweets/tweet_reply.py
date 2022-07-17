@@ -125,7 +125,7 @@ def respond_to_tweet(file):
                 put_last_tweet(file, new_id) # we put the update in the try and except block
             except:
                 put_last_tweet(file, new_id) # the line below is failing a lot so we do not end up updating the file
-                api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry for some reason I can't translate the tweet you tagged me in :(")
+                api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry account is currently suspended and cannot tweet :(")
                 logger.info(f"Error in replying or already replied to {mention.id}")
 
     # put_last_tweet(file, new_id)
