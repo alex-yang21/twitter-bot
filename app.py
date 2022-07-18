@@ -41,7 +41,7 @@ def check_jarjar():
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_replies, trigger="interval", seconds=120)
-scheduler.add_job(func=check_dms, trigger="interval", seconds=180)
+scheduler.add_job(func=check_dms, trigger="interval", seconds=300)
 # scheduler.add_job(func=check_jarjar, trigger="interval", seconds=43200)
 scheduler.start()
 
