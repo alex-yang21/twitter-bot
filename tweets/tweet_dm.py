@@ -64,11 +64,13 @@ def reply_dms(file):
         logger.info("No dms yet")
         return
 
-    dms = api.get_direct_messages(count=10) # don't anticipate doing more than 10 dms per cycle
+    dms = api.get_direct_messages(count=15) # don't anticipate doing more than 10 dms per cycle
 
     dm_id, tweet_id = 0, 0
     flag = False
     for dm in reversed(dms): # start with oldest dm first
+        status = 0
+
         text = get_tweet_text(dm)
         dm_id = int(dm.id)
         sender_id = dm._json["message_create"]["sender_id"]
@@ -82,6 +84,7 @@ def reply_dms(file):
         logger.info(f"Attempting to tweet with tweet id: {tweet_id} and url: {url}")
 
         if dm_id > last_id: # checks if any new DMs
+            flag = True
             logger.info("someone dmed me...")
             logger.info(f"Replying back to dm with id: {dm_id}")
             tweet = None
@@ -90,16 +93,19 @@ def reply_dms(file):
                 tweet = api.get_status(id=tweet_id, tweet_mode="extended")
                 screen_name = tweet.user.screen_name
                 if screen_name == "jarjarbot1":
+                    status = 1
                     logger.info("Do not translate our own tweets!")
-                    # api.send_direct_message(recipient_id=sender_id, text="Sorry I can't translate my own tweets!")
                     put_last_tweet(file, dm_id)
+                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry I can't translate my own tweets!")
                     assert 1 == 2 # fail the try block
 
                 logger.info(f"Translating tweet: {tweet.full_text}")
                 logger.info("Checking for profanity")
                 if is_profane(tweet.full_text):
-                    # api.send_direct_message(recipient_id=sender_id, text="Sorry I can't tweet that..")
+                    status = 2
+                    logger.info("Found profanity. Do not translate.")
                     put_last_tweet(file, dm_id)
+                    api.send_direct_message(recipient_id=sender_id, text="Automated message: tweet cannot be translated because it may contain profanity or a sensitive topic.")
                     assert 1 == 2 # fail the try block
 
                 # truncate the tweet text to be below 280 character limit if possible
@@ -141,12 +147,16 @@ def reply_dms(file):
                 formatted_url = f"https://twitter.com/jarjarbot1/status/{translated_tweet.id}"
                 new_dm = api.send_direct_message(recipient_id=sender_id, text=formatted_url)
                 dm_id = new_dm.id
-                flag = True
                 put_last_tweet(file, dm_id)
             except:
                 put_last_tweet(file, dm_id)
-                api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry account is currently 'limited' by Twitter and cannot tweet :(. We will be back around 4 AM (GMT) on July 18!")
                 logger.info(f"Error in replying or already replied to {dm_id}")
 
+            if status == 0: # unknown failure occurred, attempt to DM
+                try:
+                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry for some reason I can't translate the tweet you tagged me in :(")
+                except:
+                    pass
+
     if not flag:
-        logger.info("No new dms found or failure occured")
+        logger.info("No new dms found")

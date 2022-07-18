@@ -1,95 +1,161 @@
 from app import logger
 
-off_limits = {
-    # off limit words
+off_limit_words = {
     "nigger",
+    "niggers",
+    "niggerz",
     "nigga",
+    "niggas",
+    "niggaz",
     "niglet",
+    "niglets",
     "midget",
+    "midgets",
     "fag",
+    "fags",
+    "fagz",
+    "faggot",
+    "faggots",
+    "faggotz",
+    "fag1t",
+    "faget",
+    "fagg1t",
+    "faggit",
+    "fagg0t",
+    "fagit",
+    "faig",
+    "faigs",
     "kms",
-    "kill myself",
     "chink",
+    "chinks",
     "chinaman",
-    "ching chong",
     "coon",
+    "coons",
     "cunt",
+    "cunts",
     "dyke",
+    "dykes",
     "gook",
+    "gooks",
     "heeb",
     "kike",
+    "kikes",
     "dago",
     "beaner",
     "retard",
+    "retards",
     "autist",
+    "autists",
     "nazi",
+    "nazis",
     "hitler",
     "slut",
+    "sluts",
     "whore",
+    "whores",
     "hoe",
-    "homo ",
+    "homo",
     "gay",
+    "gays",
     "queer",
+    "queers",
     "inbred",
-    "camel jockey",
     "darky",
     "darkie",
+    "darkies",
     "darkey",
-    " jap ",
+    "jap",
     "twink",
+    "twinks",
     "cripple",
+    "cripples",
     "transgender",
+    "tranny",
+    "trannies",
+    "shemale",
     "prostitute",
+    "prostitutes",
     "hooker",
+    "hookers",
     "ghetto",
 
     # off limit events
     "holocaust",
     "genocide",
     "9/11",
-    "ethnic cleansing",
+    "nine-eleven",
     "apartheid",
     "casualty",
     "casualties",
     "terrorist",
     "murder",
+    "murders",
+    "shooting",
+    "shootings",
 
     # sexual
-    " anal ",
+    "anal",
     "anus",
     "blowjob",
-    "blow job",
-    " bj ",
+    "bj",
     "buttplug",
+    "buttplugs",
+    "clit",
     "clitoris",
     "dildo",
+    "dildos",
     "fellate",
     "fellatio",
     "labia",
+    "masturbate",
+    "masturbates",
+    "masturbator",
+    "masturbators",
+    "masturbating",
+    "orgasm",
     "scrotum",
     "porn",
+    "pornography",
     "penis",
+    "penises",
     "pussy",
+    "pussies",
     "vagina",
-    " cum ",
+    "vaginas",
+    "cum",
+    "cums",
 
-    " rape",
-    " rapist",
+    "rape",
+    "rapes",
+    "rapist",
+    "rapists",
     "molest",
+    "molests",
+    "molestor",
     "incest",
     "beastiality",
     "necrophil",
     "pedophile",
+    "pedophiles",
+    "pedophilia",
     "abortion",
+    "abortions",
 
     # religions
+    "christian",
     "christians",
     "christianity",
     "islam",
     "muslim",
+    "muslims",
+    "hijab",
+    "hinduism",
     "hindu",
-    " jew",
+    "hindus",
+    "judaism",
+    "jew",
     "jewish",
+    "buddha",
     "buddhism",
     "buddhist",
 
@@ -105,7 +171,16 @@ off_limits = {
     # Russia Ukraine conflict related
     "russia",
     "ukraine",
-    "putin",
+}
+
+off_limit_phrases = {
+    "kill myself",
+    "ching chong",
+    "camel jockey",
+    "blow job",
+    "butt plug",
+    "nine eleven",
+    "ethnic cleansing",
 }
 
 def is_profane(text):
@@ -113,8 +188,23 @@ def is_profane(text):
     Helper function that checks if a text contains profanity.
     """
     lower_case = text.lower()
-    for word in off_limits:
-        if word in lower_case:
-            logger.info(f"Found banned word: {word}")
+    curr_word = ""
+    for ch in lower_case:
+        if ch.isalpha():
+            curr_word += ch
+        else:
+            if curr_word in off_limit_words:
+                logger.info(f"Found banned word: {curr_word}")
+                return True
+            curr_word = ""
+
+    if curr_word in off_limit_words:
+        logger.info(f"Found banned word: {curr_word}")
+        return True
+
+    for phrase in off_limit_phrases:
+        if phrase in lower_case:
+            logger.info(f"Found banned phrase: {phrase}")
             return True
+
     return False
