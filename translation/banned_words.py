@@ -82,7 +82,6 @@ off_limit_words = {
     # off limit events
     "holocaust",
     "genocide",
-    "9/11",
     "nine-eleven",
     "apartheid",
     "casualty",
@@ -181,6 +180,7 @@ off_limit_phrases = {
     "butt plug",
     "nine eleven",
     "ethnic cleansing",
+    "9/11"
 }
 
 def is_profane(text):
