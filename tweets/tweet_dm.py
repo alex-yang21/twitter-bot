@@ -148,13 +148,14 @@ def reply_dms(file):
                 new_dm = api.send_direct_message(recipient_id=sender_id, text=formatted_url)
                 dm_id = new_dm.id
                 put_last_tweet(file, dm_id)
+                status = 3 # success
             except:
                 put_last_tweet(file, dm_id)
                 logger.info(f"Error in replying or already replied to {dm_id}")
 
             if status == 0: # unknown failure occurred, attempt to DM
                 try:
-                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry for some reason I can't translate the tweet you tagged me in :(")
+                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry for some reason I can't translate the tweet you sent me")
                 except:
                     pass
 
