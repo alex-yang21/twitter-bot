@@ -151,6 +151,7 @@ our_dict = {
     "thank": "tank",
     "humble": "humbule",
     "go": "goen",
+    "going": "goen",
     "please": "pleasa",
     "food": "foosa",
     "coward": "fraidee frog",

@@ -91,21 +91,32 @@ def reply_dms(file):
             try:
                 logger.info("Finding tweet")
                 tweet = api.get_status(id=tweet_id, tweet_mode="extended")
+                logger.info(f"Translating tweet: {tweet.full_text}")
+
+                # check that the tweet is in English
+                if tweet.lang != "en":
+                    status = 1
+                    logger.info("Tweet is not in english. Do not translate.")
+                    put_last_tweet(file, dm_id)
+                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry tweet cannot be translated because it may not be in English. Only English is supported!")
+                    assert 1 == 2 # fail the try block
+
+                # check if we are translating our own tweet
                 screen_name = tweet.user.screen_name
                 if screen_name == "jarjarbot1":
-                    status = 1
+                    status = 2
                     logger.info("Do not translate our own tweets!")
                     put_last_tweet(file, dm_id)
                     api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry I can't translate my own tweets!")
                     assert 1 == 2 # fail the try block
 
-                logger.info(f"Translating tweet: {tweet.full_text}")
+                # check for profanity
                 logger.info("Checking for profanity")
                 if is_profane(tweet.full_text):
-                    status = 2
+                    status = 3
                     logger.info("Found profanity. Do not translate.")
                     put_last_tweet(file, dm_id)
-                    api.send_direct_message(recipient_id=sender_id, text="Automated message: tweet cannot be translated because it may contain profanity or a sensitive topic.")
+                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry tweet cannot be translated because it may contain profanity or a sensitive topic.")
                     assert 1 == 2 # fail the try block
 
                 # truncate the tweet text to be below 280 character limit if possible
@@ -148,7 +159,7 @@ def reply_dms(file):
                 new_dm = api.send_direct_message(recipient_id=sender_id, text=formatted_url)
                 dm_id = new_dm.id
                 put_last_tweet(file, dm_id)
-                status = 3 # success
+                status = 4 # success
             except:
                 put_last_tweet(file, dm_id)
                 logger.info(f"Error in replying or already replied to {dm_id}")

@@ -11,11 +11,12 @@ def get_translation(text):
     """
     Takes text of tweet and returns its translation.
     """
-    # 1. twitter apostrophes are weird, replace with our apostrophes
+    # 1. twitter symbols are weird, replace based on previous outputs
     replaced = text.replace("â€™", "'")
     replaced = replaced.replace("&amp;", "&")
     replaced = replaced.replace("’", "'")
     replaced = replaced.replace("&gt;", ">")
+    replaced = replaced.replace("&lt;", "<")
 
     # 2. Search for noun and verbs that are valid to later modify words
     doc = nlp(replaced)

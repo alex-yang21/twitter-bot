@@ -71,12 +71,12 @@ def respond_to_tweet(file):
     """
     last_id = get_last_tweet(file)
     mentions = api.mentions_timeline(since_id=last_id) # only returns the 20 most recent, so we need to increase cycle frequency
-
-    if len(mentions) == 0: # no new tweets to respond to
+    num_mentions = len(mentions)
+    if num_mentions == 0: # no new tweets to respond to
         logger.info("no mentions found")
         return
 
-    logger.info("someone mentioned me...")
+    logger.info(f"Found {num_mentions} mentions.")
     new_id = 0
 
     for mention in reversed(mentions):
@@ -92,22 +92,30 @@ def respond_to_tweet(file):
                 replied_tweet = api.get_status(id=mention.in_reply_to_status_id, tweet_mode="extended") # grab the tweet that this mention is replying to
                 logger.info(f"Translating tweet: {replied_tweet.full_text}")
 
+                # check that the tweet is in english
+                if replied_tweet.lang != "en":
+                    status = 1
+                    logger.info("Tweet is not in English. Do not translate.")
+                    put_last_tweet(file, new_id)
+                    api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may not be in English. Only English is supported!")
+                    assert 1 == 2 # fail try block
+
                 # check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
                 # or if the tweet we are trying to translate is from @jarjarbot1
                 if recursion_check(replied_tweet.user.screen_name, replied_tweet.full_text.lower()):
-                    status = 1
+                    status = 2
                     logger.info(f"Tweet is recursive. Do not translate.")
                     put_last_tweet(file, new_id)
-                    api.send_direct_message(recipient_id=mention.user.id, text="Automated message: tweet cannot be translated because it may be recursive in nature.")
+                    api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may be recursive in nature.")
                     assert 1 == 2 # fail try block
 
                 logger.info("Checking for profanity")
 
                 if is_profane(replied_tweet.full_text):
-                    status = 2
+                    status = 3
                     logger.info("Found profanity. Do not translate.")
                     put_last_tweet(file, new_id)
-                    api.send_direct_message(recipient_id=mention.user.id, text="Automated message: tweet cannot be translated because it may contain profanity or a sensitive topic.")
+                    api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may contain profanity or a sensitive topic.")
                     assert 1 == 2 # fail the try block
 
                 # truncate the tweet text to be below 280 character limit if possible
@@ -128,7 +136,7 @@ def respond_to_tweet(file):
                     logger.info("Replying to tweet")
                     api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
                 put_last_tweet(file, new_id)
-                status = 3 # 3 stands for success
+                status = 4 # 4 stands for success
             except:
                 put_last_tweet(file, new_id)
                 logger.info(f"Error in replying or already replied to {mention.id}")
@@ -138,3 +146,5 @@ def respond_to_tweet(file):
                     api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry for some reason I can't translate the tweet you tagged me in :(")
                 except:
                     pass
+        else:
+            put_last_tweet(file, new_id)
