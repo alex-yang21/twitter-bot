@@ -126,12 +126,12 @@ def respond_to_tweet(file):
                     logger.info("Translation longer than 280 characters")
                     first, second = get_partitions(translation)
                     logger.info(f"Replying with first part: {first}")
-                    translated_tweet = api.update_status(status=first, in_reply_to_status_id=mention.id, auto_populate_reply_metadata=True)
+                    translated_tweet = api.update_status(status=first, in_reply_to_status_id=mention.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
                     logger.info(f"Replying with second part: {second}")
-                    api.update_status(status=second, in_reply_to_status_id=translated_tweet.id, auto_populate_reply_metadata=True)
+                    api.update_status(status=second, in_reply_to_status_id=translated_tweet.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
                 else:
                     logger.info("Replying to tweet")
-                    api.update_status(status=translation, in_reply_to_status_id=mention.id, auto_populate_reply_metadata=True)
+                    api.update_status(status=translation, in_reply_to_status_id=mention.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
                 put_last_tweet(file, new_id)
                 status = 4 # 4 stands for success
             except:

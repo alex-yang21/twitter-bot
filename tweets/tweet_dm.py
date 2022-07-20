@@ -139,9 +139,9 @@ def reply_dms(file):
                         api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                     else:
                         logger.info(f"Replying with first part: {first}")
-                        translated_tweet = api.update_status(status=first, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+                        translated_tweet = api.update_status(status=first, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
                         logger.info(f"Replying with second part: {second}")
-                        api.update_status(status=second, in_reply_to_status_id=translated_tweet.id, auto_populate_reply_metadata=True)
+                        api.update_status(status=second, in_reply_to_status_id=translated_tweet.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
                 else:
                     # if the sender is me, we tweet the translation as a quote retweet, if not a reply
                     if is_alex:
@@ -149,7 +149,7 @@ def reply_dms(file):
                         translated_tweet = api.update_status(status=translation, attachment_url=url)
                     else:
                         logger.info("Replying with translation")
-                        translated_tweet = api.update_status(status=translation, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+                        translated_tweet = api.update_status(status=translation, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
 
                 logger.info(f"Sending translated tweet to original sender: {sender_id}")
                 formatted_url = f"https://twitter.com/jarjarbot1/status/{translated_tweet.id}"
