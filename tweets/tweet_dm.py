@@ -127,7 +127,7 @@ def reply_dms(file):
                 translated_tweet = None
                 # is_following = following(sender_id) -- deprecated
                 is_alex = sender_id == alex_id
-                if len(translation) > 280:
+                if len(translation) > 280 or (not is_alex and len(translation) + len(screen_name) + 2 > 280):
                     logger.info("Translation longer than 280 characters, breaking into two tweets")
 
                     first, second = get_partitions(translation)
@@ -139,9 +139,9 @@ def reply_dms(file):
                         api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                     else:
                         logger.info(f"Replying with first part: {first}")
-                        translated_tweet = api.update_status(status=first, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
+                        translated_tweet = api.update_status(status="@" + screen_name + " " + first, in_reply_to_status_id=tweet.id)
                         logger.info(f"Replying with second part: {second}")
-                        api.update_status(status=second, in_reply_to_status_id=translated_tweet.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
+                        api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                 else:
                     # if the sender is me, we tweet the translation as a quote retweet, if not a reply
                     if is_alex:
@@ -149,7 +149,7 @@ def reply_dms(file):
                         translated_tweet = api.update_status(status=translation, attachment_url=url)
                     else:
                         logger.info("Replying with translation")
-                        translated_tweet = api.update_status(status=translation, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True, exclude_reply_user_ids=True)
+                        translated_tweet = api.update_status(status="@" + screen_name + " " + translation, in_reply_to_status_id=tweet.id)
 
                 logger.info(f"Sending translated tweet to original sender: {sender_id}")
                 formatted_url = f"https://twitter.com/jarjarbot1/status/{translated_tweet.id}"
