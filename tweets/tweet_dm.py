@@ -97,7 +97,6 @@ def reply_dms(file):
                 if tweet.lang != "en":
                     status = 1
                     logger.info("Tweet is not in english. Do not translate.")
-                    put_last_tweet(file, dm_id)
                     api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry tweet cannot be translated because it may not be in English. Only English is supported!")
                     assert 1 == 2 # fail the try block
 
@@ -106,7 +105,6 @@ def reply_dms(file):
                 if screen_name == "jarjarbot1":
                     status = 2
                     logger.info("Do not translate our own tweets!")
-                    put_last_tweet(file, dm_id)
                     api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry I can't translate my own tweets!")
                     assert 1 == 2 # fail the try block
 
@@ -115,7 +113,6 @@ def reply_dms(file):
                 if is_profane(tweet.full_text):
                     status = 3
                     logger.info("Found profanity. Do not translate.")
-                    put_last_tweet(file, dm_id)
                     api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry tweet cannot be translated because it may contain profanity or a sensitive topic.")
                     assert 1 == 2 # fail the try block
 
@@ -142,9 +139,9 @@ def reply_dms(file):
                         api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                     else:
                         logger.info(f"Replying with first part: {first}")
-                        translated_tweet = api.update_status(status="@" + screen_name + " " + first, in_reply_to_status_id=tweet.id)
+                        translated_tweet = api.update_status(status=first, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
                         logger.info(f"Replying with second part: {second}")
-                        api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
+                        api.update_status(status=second, in_reply_to_status_id=translated_tweet.id, auto_populate_reply_metadata=True)
                 else:
                     # if the sender is me, we tweet the translation as a quote retweet, if not a reply
                     if is_alex:
@@ -152,7 +149,7 @@ def reply_dms(file):
                         translated_tweet = api.update_status(status=translation, attachment_url=url)
                     else:
                         logger.info("Replying with translation")
-                        translated_tweet = api.update_status(status="@" + screen_name + " " + translation, in_reply_to_status_id=tweet.id)
+                        translated_tweet = api.update_status(status=translation, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
 
                 logger.info(f"Sending translated tweet to original sender: {sender_id}")
                 formatted_url = f"https://twitter.com/jarjarbot1/status/{translated_tweet.id}"
@@ -162,7 +159,7 @@ def reply_dms(file):
                 status = 4 # success
             except:
                 put_last_tweet(file, dm_id)
-                logger.info(f"Error in replying or already replied to {dm_id}")
+                logger.info(f"DM: Error in replying or already replied to {dm_id}")
 
             if status == 0: # unknown failure occurred, attempt to DM
                 try:

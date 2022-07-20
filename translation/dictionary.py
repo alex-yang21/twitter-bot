@@ -64,7 +64,8 @@ common_words = {
     "move": "moven",
     "moves": "moven",
     "machine": "machineek",
-    "machines": "machineeks"
+    "machines": "machineeks",
+    "most": "mostest"
 }
 
 star_wars_words = {
@@ -75,7 +76,10 @@ star_wars_words = {
     "droid": "machineek",
     "droids": "machineeks",
     "gun": "blaster",
-    "guns": "blasters"
+    "guns": "blasters",
+    "anakin": "ani",
+    "obi wan": "obi",
+    "obi-wan": "obi"
 }
 
 # there are a lot of words that could translate to bombad
@@ -149,6 +153,7 @@ our_dict = {
     "boy": "boie",
     "excuse": "ex squeezee",
     "thank": "tank",
+    "thanks": "tanks",
     "humble": "humbule",
     "go": "goen",
     "going": "goen",
@@ -341,7 +346,8 @@ two_phrases = {
     " on the": " onda",
     "see ya": "selongabye",
     "it's a ": "isa ",
-    " is a ": " isa "
+    " is a ": " isa ",
+    "out of": "outta"
 }
 
 three_phrases = {

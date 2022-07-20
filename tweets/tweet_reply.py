@@ -96,7 +96,6 @@ def respond_to_tweet(file):
                 if replied_tweet.lang != "en":
                     status = 1
                     logger.info("Tweet is not in English. Do not translate.")
-                    put_last_tweet(file, new_id)
                     api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may not be in English. Only English is supported!")
                     assert 1 == 2 # fail try block
 
@@ -105,7 +104,6 @@ def respond_to_tweet(file):
                 if recursion_check(replied_tweet.user.screen_name, replied_tweet.full_text.lower()):
                     status = 2
                     logger.info(f"Tweet is recursive. Do not translate.")
-                    put_last_tweet(file, new_id)
                     api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may be recursive in nature.")
                     assert 1 == 2 # fail try block
 
@@ -114,7 +112,6 @@ def respond_to_tweet(file):
                 if is_profane(replied_tweet.full_text):
                     status = 3
                     logger.info("Found profanity. Do not translate.")
-                    put_last_tweet(file, new_id)
                     api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may contain profanity or a sensitive topic.")
                     assert 1 == 2 # fail the try block
 
@@ -129,17 +126,17 @@ def respond_to_tweet(file):
                     logger.info("Translation longer than 280 characters")
                     first, second = get_partitions(translation)
                     logger.info(f"Replying with first part: {first}")
-                    translated_tweet = api.update_status(status="@" + mention.user.screen_name + " " + first, in_reply_to_status_id=mention.id)
+                    translated_tweet = api.update_status(status=first, in_reply_to_status_id=mention.id, auto_populate_reply_metadata=True)
                     logger.info(f"Replying with second part: {second}")
-                    api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
+                    api.update_status(status=second, in_reply_to_status_id=translated_tweet.id, auto_populate_reply_metadata=True)
                 else:
                     logger.info("Replying to tweet")
-                    api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
+                    api.update_status(status=translation, in_reply_to_status_id=mention.id, auto_populate_reply_metadata=True)
                 put_last_tweet(file, new_id)
                 status = 4 # 4 stands for success
             except:
                 put_last_tweet(file, new_id)
-                logger.info(f"Error in replying or already replied to {mention.id}")
+                logger.info(f"Reply: Error in replying or already replied to {mention.id}")
 
             if status == 0: # unknown failure occurred, attempt to DM
                 try:
