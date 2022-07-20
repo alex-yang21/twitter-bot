@@ -127,7 +127,7 @@ def reply_dms(file):
                 translated_tweet = None
                 # is_following = following(sender_id) -- deprecated
                 is_alex = sender_id == alex_id
-                if len(translation) > 280 or (not is_alex and len(translation) + len(screen_name) + 2 > 280):
+                if len(translation) > 280:
                     logger.info("Translation longer than 280 characters, breaking into two tweets")
 
                     first, second = get_partitions(translation)

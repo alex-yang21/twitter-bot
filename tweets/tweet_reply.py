@@ -122,7 +122,7 @@ def respond_to_tweet(file):
                 logger.info(f"Translated tweet: {translation}")
 
                 translated_tweet = None
-                if len(translation) > 280 - len(mention.user.screen_name) - 2:
+                if len(translation) > 280:
                     logger.info("Translation longer than 280 characters")
                     first, second = get_partitions(translation)
                     logger.info(f"Replying with first part: {first}")
