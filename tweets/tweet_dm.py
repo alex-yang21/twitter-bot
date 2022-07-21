@@ -141,7 +141,7 @@ def reply_dms(file):
                         logger.info(f"Replying with first part: {first}")
                         translated_tweet = api.update_status(status="@" + screen_name + " " + first, in_reply_to_status_id=tweet.id)
                         logger.info(f"Replying with second part: {second}")
-                        api.update_status(status="@jarjarbot1 " + second, in_reply_to_status_id=translated_tweet.id)
+                        api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
                 else:
                     # if the sender is me, we tweet the translation as a quote retweet, if not a reply
                     if is_alex:
