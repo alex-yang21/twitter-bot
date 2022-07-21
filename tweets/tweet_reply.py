@@ -128,7 +128,7 @@ def respond_to_tweet(file):
                     logger.info(f"Replying with first part: {first}")
                     translated_tweet = api.update_status(status="@" + mention.user.screen_name + " " + first, in_reply_to_status_id=mention.id)
                     logger.info(f"Replying with second part: {second}")
-                    api.update_status(status=second, in_reply_to_status_id=translated_tweet.id)
+                    api.update_status(status="@" + mention.user.screen_name + " @jarjarbot1 " + second, in_reply_to_status_id=translated_tweet.id)
                 else:
                     logger.info("Replying to tweet")
                     api.update_status(status="@" + mention.user.screen_name + " " + translation, in_reply_to_status_id=mention.id)
