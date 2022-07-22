@@ -187,6 +187,7 @@ def is_profane(text):
     """
     Helper function that checks if a text contains profanity.
     """
+    logger.info("Checking for profanity")
     lower_case = text.lower()
     curr_word = ""
     for ch in lower_case:

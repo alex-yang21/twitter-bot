@@ -97,6 +97,7 @@ def respond_to_tweet(file):
                     status = 1
                     logger.info("Tweet is not in English. Do not translate.")
                     api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may not be in English. Only English is supported!")
+                    logger.info("Sent a DM to the user to inform of failure.")
                     assert 1 == 2 # fail try block
 
                 # check if the tweet we are trying to translate is of form '@jarjarbot1 translate', if so, do not translate
@@ -105,14 +106,14 @@ def respond_to_tweet(file):
                     status = 2
                     logger.info(f"Tweet is recursive. Do not translate.")
                     api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may be recursive in nature.")
+                    logger.info("Sent a DM to the user to inform of failure.")
                     assert 1 == 2 # fail try block
-
-                logger.info("Checking for profanity")
 
                 if is_profane(replied_tweet.full_text):
                     status = 3
                     logger.info("Found profanity. Do not translate.")
                     api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry tweet cannot be translated because it may contain profanity or a sensitive topic.")
+                    logger.info("Sent a DM to the user to inform of failure.")
                     assert 1 == 2 # fail the try block
 
                 # truncate the tweet text to be below 280 character limit if possible
@@ -140,7 +141,8 @@ def respond_to_tweet(file):
 
             if status == 0: # unknown failure occurred, attempt to DM
                 try:
-                    api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry for some reason I can't translate the tweet you tagged me in :(")
+                    api.send_direct_message(recipient_id=mention.user.id, text="Automated message: sorry for some reason I can't translate the tweet you tagged me in. The user may be private or something else went wrong :(")
+                    logger.info("Sent a DM to the user to inform of failure.")
                 except:
                     pass
         else:

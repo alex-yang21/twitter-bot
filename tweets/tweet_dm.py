@@ -81,6 +81,7 @@ def reply_dms(file):
             logger.info("DM had no associated tweet")
             continue
         tweet_id, url = pair
+
         logger.info(f"Attempting to tweet with tweet id: {tweet_id} and url: {url}")
 
         if dm_id > last_id: # checks if any new DMs
@@ -93,27 +94,38 @@ def reply_dms(file):
                 tweet = api.get_status(id=tweet_id, tweet_mode="extended")
                 logger.info(f"Translating tweet: {tweet.full_text}")
 
+                # check if we follow the account, we no longer accept DMs from accounts we do not follow
+                is_following = following(sender_id)
+                if not is_following:
+                    status = 1
+                    logger.info("We do not follow this account. Do not translate.")
+                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry we no longer support DM requests from any account. If you would still like a translation, please reply to the tweet tagging us with 'translate'!")
+                    logger.info("Sent a DM to the user to inform of failure.")
+                    assert 1 == 2 # fail the try block
+
                 # check that the tweet is in English
                 if tweet.lang != "en":
-                    status = 1
+                    status = 2
                     logger.info("Tweet is not in english. Do not translate.")
                     api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry tweet cannot be translated because it may not be in English. Only English is supported!")
+                    logger.info("Sent a DM to the user to inform of failure.")
                     assert 1 == 2 # fail the try block
 
                 # check if we are translating our own tweet
                 screen_name = tweet.user.screen_name
                 if screen_name == "jarjarbot1":
-                    status = 2
+                    status = 3
                     logger.info("Do not translate our own tweets!")
                     api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry I can't translate my own tweets!")
+                    logger.info("Sent a DM to the user to inform of failure.")
                     assert 1 == 2 # fail the try block
 
                 # check for profanity
-                logger.info("Checking for profanity")
                 if is_profane(tweet.full_text):
-                    status = 3
+                    status = 4
                     logger.info("Found profanity. Do not translate.")
                     api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry tweet cannot be translated because it may contain profanity or a sensitive topic.")
+                    logger.info("Sent a DM to the user to inform of failure.")
                     assert 1 == 2 # fail the try block
 
                 # truncate the tweet text to be below 280 character limit if possible
@@ -125,7 +137,6 @@ def reply_dms(file):
                 logger.info(f"Translated tweet: {translation}")
 
                 translated_tweet = None
-                # is_following = following(sender_id) -- deprecated
                 is_alex = sender_id == alex_id
                 if len(translation) > 280 or (not is_alex and len(translation) + len(screen_name) + 2 > 280):
                     logger.info("Translation longer than 280 characters, breaking into two tweets")
@@ -156,14 +167,15 @@ def reply_dms(file):
                 new_dm = api.send_direct_message(recipient_id=sender_id, text=formatted_url)
                 dm_id = new_dm.id
                 put_last_tweet(file, dm_id)
-                status = 4 # success
+                status = 5 # success
             except:
                 put_last_tweet(file, dm_id)
                 logger.info(f"DM: Error in replying or already replied to {dm_id}")
 
             if status == 0: # unknown failure occurred, attempt to DM
                 try:
-                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry for some reason I can't translate the tweet you sent me")
+                    api.send_direct_message(recipient_id=sender_id, text="Automated message: sorry for some reason I can't translate the tweet you sent me. The user may be private or something else went wrong :(")
+                    logger.info("Sent a DM to the user to inform of failure.")
                 except:
                     pass
 

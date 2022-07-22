@@ -163,12 +163,13 @@ our_dict = {
     "cowards": "fraidee frogs",
     "than": "dan",
     "for": "per",
-    # "be": "besa",
+    "be": "besa",
     "like": "liken",
     "expect": "spect",
     "love": "luv",
     "loves": "luvs",
     "peace": "peles",
+    "peaceful": "peleful",
     "these": "dese",
     "was": "wasa",
     "were": "wasa",
@@ -184,6 +185,10 @@ our_dict = {
     "cheap": "cheapo",
     "done": "donezo",
     "watch": "watchey",
+    "sad": "sadden",
+    "not": "nosa",
+    "job": "jobben",
+    "over": "ova",
 
     # names
     "alex": "alexsa",
@@ -355,6 +360,7 @@ three_phrases = {
     "see you later": "selongabye",
     "see ya later": "selongabye",
     "all of you": "all-n youse",
+    "all of the": "allada",
     "it is a ": "isa ",
     "into the ": "in tada ", # technically only 2 but needs precedence over "to the"
     "a lot of ": "mui ",
