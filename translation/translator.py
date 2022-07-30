@@ -14,7 +14,7 @@ def get_translation(text):
     # 1. twitter symbols are weird, replace based on previous outputs
     replaced = text.replace("â€™", "'")
     replaced = replaced.replace("&amp;", "&")
-    replaced = replaced.replace("’", "'")
+    # replaced = replaced.replace("’", "'")
     replaced = replaced.replace("&gt;", ">")
     replaced = replaced.replace("&lt;", "<")
 
