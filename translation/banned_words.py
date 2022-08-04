@@ -47,6 +47,7 @@ off_limit_words = {
     "retarded",
     "autist",
     "autists",
+    "autistic",
     "nazi",
     "nazis",
     "hitler",
